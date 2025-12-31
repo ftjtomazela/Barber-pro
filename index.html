@@ -2,128 +2,278 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BarberApp Pro - Gestão</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BarberApp Premium</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
     <style>
-        body { background-color: #f4f6f9; }
-        .card-stat { border-left: 5px solid; }
-        .border-colab { border-color: #28a745; }
-        .border-house { border-color: #007bff; }
-        .hidden { display: none; }
-        .chatbot-badge { background-color: #ffc107; color: #000; font-weight: bold; padding: 2px 6px; border-radius: 50%; }
+        :root {
+            --primary-gold: #D4AF37;
+            --primary-gold-hover: #b59024;
+            --bg-dark: #121212;
+            --card-dark: #1E1E1E;
+            --text-light: #E0E0E0;
+            --text-muted: #A0A0A0;
+            --accent-green: #2ecc71;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6, .navbar-brand {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Navbar Estilizada */
+        .navbar {
+            background: linear-gradient(180deg, rgba(30,30,30,1) 0%, rgba(18,18,18,0) 100%);
+            padding-bottom: 20px;
+        }
+        .navbar-brand {
+            color: var(--primary-gold) !important;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Cards e Inputs */
+        .card {
+            background-color: var(--card-dark);
+            border: 1px solid #333;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .form-control, .form-select {
+            background-color: #2C2C2C;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 10px;
+            padding: 12px;
+        }
+        .form-control:focus, .form-select:focus {
+            background-color: #333;
+            border-color: var(--primary-gold);
+            color: #fff;
+            box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25);
+        }
+        
+        /* Botões */
+        .btn-gold {
+            background: linear-gradient(45deg, var(--primary-gold), #F4C430);
+            border: none;
+            color: #000;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.2s;
+        }
+        .btn-gold:hover {
+            background: #b59024;
+            transform: scale(1.02);
+            color: #000;
+        }
+
+        /* Abas */
+        .nav-tabs {
+            border-bottom: 1px solid #333;
+        }
+        .nav-link {
+            color: var(--text-muted);
+            border: none;
+            font-weight: 600;
+        }
+        .nav-link.active {
+            background-color: transparent !important;
+            color: var(--primary-gold) !important;
+            border-bottom: 3px solid var(--primary-gold) !important;
+        }
+        .nav-link:hover {
+            color: var(--primary-gold);
+            border-color: transparent;
+        }
+
+        /* Utilitários */
+        .hidden { display: none !important; }
+        .text-gold { color: var(--primary-gold) !important; }
+        .bg-dark-input { background-color: #2C2C2C; }
+
+        /* Lista Chatbot */
+        .list-group-item {
+            background-color: #252525;
+            border-color: #333;
+            color: var(--text-light);
+            margin-bottom: 5px;
+            border-radius: 10px !important;
+        }
+        .list-group-item:hover {
+            background-color: #303030;
+        }
+
+        /* Tabela */
+        .table { color: var(--text-light); }
+        .table-striped>tbody>tr:nth-of-type(odd)>* {
+            background-color: #252525;
+            color: var(--text-light);
+        }
+        
+        /* Animação de entrada */
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
 
-<nav class="navbar navbar-dark bg-dark">
-    <div class="container-fluid">
-        <span class="navbar-brand mb-0 h1">✂️ BarberApp</span>
-        <button class="btn btn-outline-light btn-sm" onclick="logout()">Sair</button>
+<nav class="navbar navbar-dark">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+        <span class="navbar-brand mb-0"><i class="bi bi-scissors"></i> Barber<span class="text-white">Pro</span></span>
+        <button class="btn btn-outline-secondary btn-sm rounded-pill px-3" onclick="logout()">
+            <i class="bi bi-box-arrow-right"></i> Sair
+        </button>
     </div>
 </nav>
 
-<div id="loginScreen" class="container mt-5">
+<div id="loginScreen" class="container mt-5 fade-in">
     <div class="card p-4 mx-auto" style="max-width: 400px;">
-        <h4 class="text-center">Login</h4>
-        <div class="mb-3">
-            <label>Usuário</label>
-            <select id="userSelect" class="form-select">
-                <option value="dono">Dono (Admin)</option>
-                <option value="colaborador">Colaborador (Barbeiro)</option>
+        <div class="text-center mb-4">
+            <h1 class="text-gold" style="font-size: 3rem;"><i class="bi bi-person-workspace"></i></h1>
+            <h4>Bem-vindo</h4>
+            <p class="text-muted">Selecione seu perfil de acesso</p>
+        </div>
+        <div class="mb-4">
+            <label class="form-label text-muted">Quem é você?</label>
+            <select id="userSelect" class="form-select form-select-lg">
+                <option value="dono">👑 Dono (Administrador)</option>
+                <option value="colaborador">💈 Colaborador (Barbeiro)</option>
             </select>
         </div>
-        <button class="btn btn-primary w-100" onclick="login()">Entrar</button>
+        <button class="btn btn-gold w-100 py-3 rounded-pill" onclick="login()">
+            Acessar Sistema
+        </button>
     </div>
 </div>
 
-<div id="mainPanel" class="container mt-4 hidden">
+<div id="mainPanel" class="container mt-2 hidden fade-in">
     
-    <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+    <ul class="nav nav-tabs nav-fill mb-4" id="myTab" role="tablist">
         <li class="nav-item">
-            <button class="nav-link active" id="lancar-tab" data-bs-toggle="tab" data-bs-target="#lancar" type="button">📝 Lançar Serviço</button>
+            <button class="nav-link active" id="lancar-tab" data-bs-toggle="tab" data-bs-target="#lancar" type="button">
+                <i class="bi bi-plus-circle"></i> Lançar
+            </button>
         </li>
         <li class="nav-item">
-            <button class="nav-link" id="relatorio-tab" data-bs-toggle="tab" data-bs-target="#relatorio" type="button">📊 Relatório do Dia</button>
+            <button class="nav-link" id="relatorio-tab" data-bs-toggle="tab" data-bs-target="#relatorio" type="button">
+                <i class="bi bi-graph-up"></i> Relatório
+            </button>
         </li>
         <li class="nav-item">
-            <button class="nav-link" id="chatbot-tab" data-bs-toggle="tab" data-bs-target="#chatbot" type="button">🤖 Chatbot <span id="chatBadge" class="chatbot-badge">0</span></button>
+            <button class="nav-link" id="chatbot-tab" data-bs-toggle="tab" data-bs-target="#chatbot" type="button">
+                <i class="bi bi-robot"></i> Bot <span id="chatBadge" class="badge bg-danger rounded-pill ms-1" style="font-size: 0.6rem;">0</span>
+            </button>
         </li>
     </ul>
 
     <div class="tab-content">
         
         <div class="tab-pane fade show active" id="lancar">
-            <div class="card p-3">
-                <h5>Nova Comanda</h5>
+            <div class="card p-4">
+                <h5 class="mb-4 border-bottom border-secondary pb-2">Novo Atendimento</h5>
                 <form onsubmit="salvarServico(event)">
                     <div class="mb-3">
-                        <label>Cliente</label>
-                        <input type="text" id="clienteNome" class="form-control" placeholder="Ex: João Silva" required>
+                        <label class="text-muted small">Nome do Cliente</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-person"></i></span>
+                            <input type="text" id="clienteNome" class="form-control" placeholder="Digite o nome..." required>
+                        </div>
                     </div>
                     <div class="mb-3">
-                        <label>Serviço</label>
+                        <label class="text-muted small">Serviço Realizado</label>
                         <select id="tipoServico" class="form-select">
-                            <option value="Corte Degradê">Corte Degradê</option>
-                            <option value="Corte Social">Corte Social</option>
-                            <option value="Barba">Barba</option>
-                            <option value="Aparar Barba">Aparar Barba</option>
-                            <option value="Sobrancelha">Sobrancelha</option>
-                            <option value="Combo Completo">Combo Completo</option>
+                            <option value="Corte Degradê">✂️ Corte Degradê</option>
+                            <option value="Corte Social">✂️ Corte Social</option>
+                            <option value="Barba">🪒 Barba (Toalha Quente)</option>
+                            <option value="Aparar Barba">🪒 Aparar Barba</option>
+                            <option value="Sobrancelha">📐 Sobrancelha</option>
+                            <option value="Combo Completo">⭐ Combo Completo</option>
                         </select>
                     </div>
-                    <div class="mb-3">
-                        <label>Preço Cobrado (R$)</label>
-                        <input type="number" id="valorServico" class="form-control" placeholder="0.00" step="0.01" required>
-                        <small class="text-muted">Insira o valor final negociado.</small>
+                    <div class="mb-4">
+                        <label class="text-muted small">Valor Cobrado (R$)</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-dark border-secondary text-gold">R$</span>
+                            <input type="number" id="valorServico" class="form-control" placeholder="0.00" step="0.01" required>
+                        </div>
                     </div>
                     <div class="d-grid">
-                        <button type="submit" class="btn btn-success btn-lg">💰 Confirmar e Dividir</button>
+                        <button type="submit" class="btn btn-gold py-3 rounded-3 shadow">
+                            <i class="bi bi-check-lg"></i> Confirmar Lançamento
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
 
         <div class="tab-pane fade" id="relatorio">
-            <div class="row mb-3">
+            <div class="row g-3 mb-4">
                 <div class="col-6">
-                    <div class="card card-stat border-colab p-3">
-                        <h6>Colaborador (60%)</h6>
-                        <h3 class="text-success">R$ <span id="totalColab">0.00</span></h3>
+                    <div class="card p-3 h-100 text-center border-0" style="background: linear-gradient(145deg, #1e1e1e, #252525);">
+                        <small class="text-muted text-uppercase fw-bold" style="font-size: 0.7rem;">Colaborador (60%)</small>
+                        <h3 class="text-success mt-2 fw-bold">R$ <span id="totalColab">0.00</span></h3>
                     </div>
                 </div>
                 <div class="col-6">
-                    <div class="card card-stat border-house p-3">
-                        <h6>Barbearia (40%)</h6>
-                        <h3 class="text-primary">R$ <span id="totalCasa">0.00</span></h3>
+                    <div class="card p-3 h-100 text-center border-0" style="background: linear-gradient(145deg, #1e1e1e, #252525);">
+                        <small class="text-muted text-uppercase fw-bold" style="font-size: 0.7rem;">Casa (40%)</small>
+                        <h3 class="text-gold mt-2 fw-bold">R$ <span id="totalCasa">0.00</span></h3>
                     </div>
                 </div>
             </div>
             
-            <h5>Histórico do Dia</h5>
-            <div class="table-responsive">
-                <table class="table table-striped table-sm">
-                    <thead>
-                        <tr>
-                            <th>Cliente</th>
-                            <th>Serviço</th>
-                            <th>Total</th>
-                            <th>Colab.</th>
-                        </tr>
-                    </thead>
-                    <tbody id="listaHistorico">
-                        </tbody>
-                </table>
+            <div class="card p-3">
+                <h6 class="mb-3 text-muted">Histórico de Hoje</h6>
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover table-sm align-middle mb-0">
+                        <thead>
+                            <tr class="text-muted small">
+                                <th>Cli.</th>
+                                <th>Sv.</th>
+                                <th>Total</th>
+                                <th>Sua Parte</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listaHistorico" class="small">
+                            </tbody>
+                    </table>
+                </div>
+                <div class="mt-3 text-center">
+                   <button class="btn btn-outline-danger btn-sm" onclick="limparDia()">
+                       <i class="bi bi-trash"></i> Fechar Caixa do Dia
+                   </button>
+                </div>
             </div>
-            <button class="btn btn-secondary btn-sm mt-3" onclick="limparDia()">Fechar o Dia (Limpar)</button>
         </div>
 
         <div class="tab-pane fade" id="chatbot">
-            <div class="alert alert-info">
-                Pedidos agendados ou solicitados via WhatsApp chegam aqui.
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">Pedidos Online</h5>
+                <span class="badge bg-secondary">WhatsApp / Bot</span>
             </div>
+            
             <div id="chatbotList" class="list-group">
                 </div>
+            <div class="text-center mt-3">
+                <small class="text-muted">Integração ativa aguardando Webhook...</small>
+            </div>
         </div>
 
     </div>
@@ -131,16 +281,22 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // --- Lógica do Sistema ---
+    // --- Lógica do Sistema (Mesma Lógica, Novo Visual) ---
 
-    // 1. Simulação de Login
     function login() {
         const userType = document.getElementById('userSelect').value;
         localStorage.setItem('barberUser', userType);
-        document.getElementById('loginScreen').classList.add('hidden');
-        document.getElementById('mainPanel').classList.remove('hidden');
-        atualizarRelatorio();
-        carregarChatbotMock();
+        
+        // Efeito visual de troca
+        const loginScreen = document.getElementById('loginScreen');
+        loginScreen.style.opacity = '0';
+        setTimeout(() => {
+            loginScreen.classList.add('hidden');
+            const mainPanel = document.getElementById('mainPanel');
+            mainPanel.classList.remove('hidden');
+            atualizarRelatorio();
+            carregarChatbotMock();
+        }, 300);
     }
 
     function logout() {
@@ -148,7 +304,6 @@
         location.reload();
     }
 
-    // 2. Salvar Serviço e Calcular 60/40
     function salvarServico(e) {
         e.preventDefault();
         
@@ -156,7 +311,6 @@
         const servico = document.getElementById('tipoServico').value;
         const valorTotal = parseFloat(document.getElementById('valorServico').value);
 
-        // Regra de Negócio: 60% Colaborador, 40% Dono
         const parteColaborador = valorTotal * 0.60;
         const parteCasa = valorTotal * 0.40;
 
@@ -170,20 +324,18 @@
             data: new Date().toLocaleTimeString()
         };
 
-        // Salvar no LocalStorage (simulando BD)
         let dados = JSON.parse(localStorage.getItem('barberDados')) || [];
         dados.push(registro);
         localStorage.setItem('barberDados', JSON.stringify(dados));
 
-        alert(`Lançado! R$ ${parteColaborador.toFixed(2)} p/ Colaborador e R$ ${parteCasa.toFixed(2)} p/ Casa.`);
+        // Feedback visual mais bonito que alert
+        alert(`✅ Sucesso!\nColaborador: R$ ${parteColaborador.toFixed(2)}\nBarbearia: R$ ${parteCasa.toFixed(2)}`);
         
-        // Limpar form
         document.getElementById('clienteNome').value = '';
         document.getElementById('valorServico').value = '';
         atualizarRelatorio();
     }
 
-    // 3. Atualizar Relatório e Tabela
     function atualizarRelatorio() {
         let dados = JSON.parse(localStorage.getItem('barberDados')) || [];
         
@@ -192,15 +344,19 @@
         const tbody = document.getElementById('listaHistorico');
         tbody.innerHTML = '';
 
-        dados.forEach(item => {
+        // Mostra os últimos primeiro (reverse)
+        dados.slice().reverse().forEach(item => {
             totalC += item.colab;
             totalH += item.casa;
 
+            // Formata nome serviço curto para caber no mobile
+            let servicoCurto = item.servico.split(' ')[0] + '...';
+
             let row = `<tr>
-                <td>${item.cliente}</td>
-                <td>${item.servico}</td>
-                <td>R$ ${item.total.toFixed(2)}</td>
-                <td class="text-success">R$ ${item.colab.toFixed(2)}</td>
+                <td class="fw-bold text-white">${item.cliente}</td>
+                <td class="text-muted">${servicoCurto}</td>
+                <td>R$${item.total.toFixed(0)}</td>
+                <td class="text-success fw-bold">R$${item.colab.toFixed(2)}</td>
             </tr>`;
             tbody.innerHTML += row;
         });
@@ -210,18 +366,17 @@
     }
 
     function limparDia() {
-        if(confirm("Deseja fechar o caixa e limpar os dados de hoje?")) {
+        if(confirm("Tem certeza que deseja zerar o caixa de hoje?")) {
             localStorage.removeItem('barberDados');
             atualizarRelatorio();
         }
     }
 
-    // 4. Integração Chatbot (Simulação)
     function carregarChatbotMock() {
-        // Aqui você conectaria com sua API real
         const pedidosMock = [
-            { cliente: "Carlos (Via Zap)", servico: "Barba + Corte", hora: "14:30" },
-            { cliente: "Ana (Via Zap)", servico: "Sobrancelha", hora: "15:00" }
+            { cliente: "Carlos (Zap)", servico: "Barba + Corte", hora: "14:30" },
+            { cliente: "Ana (Zap)", servico: "Sobrancelha", hora: "15:00" },
+            { cliente: "Pedro (Site)", servico: "Corte Social", hora: "16:00" }
         ];
 
         const lista = document.getElementById('chatbotList');
@@ -230,27 +385,26 @@
         
         pedidosMock.forEach(p => {
             lista.innerHTML += `
-                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                <div class="list-group-item d-flex justify-content-between align-items-center p-3">
                     <div>
-                        <h6 class="mb-1">${p.cliente}</h6>
-                        <small>${p.servico}</small>
+                        <h6 class="mb-0 text-white">${p.cliente}</h6>
+                        <small class="text-muted"><i class="bi bi-clock"></i> ${p.hora} • ${p.servico}</small>
                     </div>
-                    <span class="badge bg-primary rounded-pill">${p.hora}</span>
-                    <button class="btn btn-sm btn-outline-success ms-2" onclick="importarPedido('${p.cliente}', '${p.servico}')">Lançar</button>
-                </a>
+                    <button class="btn btn-sm btn-outline-success rounded-pill px-3" onclick="importarPedido('${p.cliente}', '${p.servico}')">
+                        <i class="bi bi-arrow-up-short"></i> Lançar
+                    </button>
+                </div>
             `;
         });
         badge.innerText = pedidosMock.length;
     }
 
     function importarPedido(nome, servico) {
-        // Joga os dados do chat para o formulário de lançamento
         document.getElementById('clienteNome').value = nome;
-        // Tenta selecionar o serviço se existir na lista, ou deixa padrão
-        document.getElementById('lancar-tab').click(); // Muda a aba
+        document.getElementById('lancar-tab').click(); 
+        document.getElementById('valorServico').focus();
     }
 
-    // Verifica login ao abrir
     if(localStorage.getItem('barberUser')) {
         document.getElementById('loginScreen').classList.add('hidden');
         document.getElementById('mainPanel').classList.remove('hidden');
