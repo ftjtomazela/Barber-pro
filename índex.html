@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BarberApp Pro - Gestão</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f6f9; }
+        .card-stat { border-left: 5px solid; }
+        .border-colab { border-color: #28a745; }
+        .border-house { border-color: #007bff; }
+        .hidden { display: none; }
+        .chatbot-badge { background-color: #ffc107; color: #000; font-weight: bold; padding: 2px 6px; border-radius: 50%; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">✂️ BarberApp</span>
+        <button class="btn btn-outline-light btn-sm" onclick="logout()">Sair</button>
+    </div>
+</nav>
+
+<div id="loginScreen" class="container mt-5">
+    <div class="card p-4 mx-auto" style="max-width: 400px;">
+        <h4 class="text-center">Login</h4>
+        <div class="mb-3">
+            <label>Usuário</label>
+            <select id="userSelect" class="form-select">
+                <option value="dono">Dono (Admin)</option>
+                <option value="colaborador">Colaborador (Barbeiro)</option>
+            </select>
+        </div>
+        <button class="btn btn-primary w-100" onclick="login()">Entrar</button>
+    </div>
+</div>
+
+<div id="mainPanel" class="container mt-4 hidden">
+    
+    <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+        <li class="nav-item">
+            <button class="nav-link active" id="lancar-tab" data-bs-toggle="tab" data-bs-target="#lancar" type="button">📝 Lançar Serviço</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" id="relatorio-tab" data-bs-toggle="tab" data-bs-target="#relatorio" type="button">📊 Relatório do Dia</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" id="chatbot-tab" data-bs-toggle="tab" data-bs-target="#chatbot" type="button">🤖 Chatbot <span id="chatBadge" class="chatbot-badge">0</span></button>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        
+        <div class="tab-pane fade show active" id="lancar">
+            <div class="card p-3">
+                <h5>Nova Comanda</h5>
+                <form onsubmit="salvarServico(event)">
+                    <div class="mb-3">
+                        <label>Cliente</label>
+                        <input type="text" id="clienteNome" class="form-control" placeholder="Ex: João Silva" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Serviço</label>
+                        <select id="tipoServico" class="form-select">
+                            <option value="Corte Degradê">Corte Degradê</option>
+                            <option value="Corte Social">Corte Social</option>
+                            <option value="Barba">Barba</option>
+                            <option value="Aparar Barba">Aparar Barba</option>
+                            <option value="Sobrancelha">Sobrancelha</option>
+                            <option value="Combo Completo">Combo Completo</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>Preço Cobrado (R$)</label>
+                        <input type="number" id="valorServico" class="form-control" placeholder="0.00" step="0.01" required>
+                        <small class="text-muted">Insira o valor final negociado.</small>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success btn-lg">💰 Confirmar e Dividir</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="relatorio">
+            <div class="row mb-3">
+                <div class="col-6">
+                    <div class="card card-stat border-colab p-3">
+                        <h6>Colaborador (60%)</h6>
+                        <h3 class="text-success">R$ <span id="totalColab">0.00</span></h3>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card card-stat border-house p-3">
+                        <h6>Barbearia (40%)</h6>
+                        <h3 class="text-primary">R$ <span id="totalCasa">0.00</span></h3>
+                    </div>
+                </div>
+            </div>
+            
+            <h5>Histórico do Dia</h5>
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Serviço</th>
+                            <th>Total</th>
+                            <th>Colab.</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaHistorico">
+                        </tbody>
+                </table>
+            </div>
+            <button class="btn btn-secondary btn-sm mt-3" onclick="limparDia()">Fechar o Dia (Limpar)</button>
+        </div>
+
+        <div class="tab-pane fade" id="chatbot">
+            <div class="alert alert-info">
+                Pedidos agendados ou solicitados via WhatsApp chegam aqui.
+            </div>
+            <div id="chatbotList" class="list-group">
+                </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // --- Lógica do Sistema ---
+
+    // 1. Simulação de Login
+    function login() {
+        const userType = document.getElementById('userSelect').value;
+        localStorage.setItem('barberUser', userType);
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('mainPanel').classList.remove('hidden');
+        atualizarRelatorio();
+        carregarChatbotMock();
+    }
+
+    function logout() {
+        localStorage.removeItem('barberUser');
+        location.reload();
+    }
+
+    // 2. Salvar Serviço e Calcular 60/40
+    function salvarServico(e) {
+        e.preventDefault();
+        
+        const cliente = document.getElementById('clienteNome').value;
+        const servico = document.getElementById('tipoServico').value;
+        const valorTotal = parseFloat(document.getElementById('valorServico').value);
+
+        // Regra de Negócio: 60% Colaborador, 40% Dono
+        const parteColaborador = valorTotal * 0.60;
+        const parteCasa = valorTotal * 0.40;
+
+        const registro = {
+            id: Date.now(),
+            cliente,
+            servico,
+            total: valorTotal,
+            colab: parteColaborador,
+            casa: parteCasa,
+            data: new Date().toLocaleTimeString()
+        };
+
+        // Salvar no LocalStorage (simulando BD)
+        let dados = JSON.parse(localStorage.getItem('barberDados')) || [];
+        dados.push(registro);
+        localStorage.setItem('barberDados', JSON.stringify(dados));
+
+        alert(`Lançado! R$ ${parteColaborador.toFixed(2)} p/ Colaborador e R$ ${parteCasa.toFixed(2)} p/ Casa.`);
+        
+        // Limpar form
+        document.getElementById('clienteNome').value = '';
+        document.getElementById('valorServico').value = '';
+        atualizarRelatorio();
+    }
+
+    // 3. Atualizar Relatório e Tabela
+    function atualizarRelatorio() {
+        let dados = JSON.parse(localStorage.getItem('barberDados')) || [];
+        
+        let totalC = 0;
+        let totalH = 0;
+        const tbody = document.getElementById('listaHistorico');
+        tbody.innerHTML = '';
+
+        dados.forEach(item => {
+            totalC += item.colab;
+            totalH += item.casa;
+
+            let row = `<tr>
+                <td>${item.cliente}</td>
+                <td>${item.servico}</td>
+                <td>R$ ${item.total.toFixed(2)}</td>
+                <td class="text-success">R$ ${item.colab.toFixed(2)}</td>
+            </tr>`;
+            tbody.innerHTML += row;
+        });
+
+        document.getElementById('totalColab').innerText = totalC.toFixed(2);
+        document.getElementById('totalCasa').innerText = totalH.toFixed(2);
+    }
+
+    function limparDia() {
+        if(confirm("Deseja fechar o caixa e limpar os dados de hoje?")) {
+            localStorage.removeItem('barberDados');
+            atualizarRelatorio();
+        }
+    }
+
+    // 4. Integração Chatbot (Simulação)
+    function carregarChatbotMock() {
+        // Aqui você conectaria com sua API real
+        const pedidosMock = [
+            { cliente: "Carlos (Via Zap)", servico: "Barba + Corte", hora: "14:30" },
+            { cliente: "Ana (Via Zap)", servico: "Sobrancelha", hora: "15:00" }
+        ];
+
+        const lista = document.getElementById('chatbotList');
+        const badge = document.getElementById('chatBadge');
+        lista.innerHTML = '';
+        
+        pedidosMock.forEach(p => {
+            lista.innerHTML += `
+                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-1">${p.cliente}</h6>
+                        <small>${p.servico}</small>
+                    </div>
+                    <span class="badge bg-primary rounded-pill">${p.hora}</span>
+                    <button class="btn btn-sm btn-outline-success ms-2" onclick="importarPedido('${p.cliente}', '${p.servico}')">Lançar</button>
+                </a>
+            `;
+        });
+        badge.innerText = pedidosMock.length;
+    }
+
+    function importarPedido(nome, servico) {
+        // Joga os dados do chat para o formulário de lançamento
+        document.getElementById('clienteNome').value = nome;
+        // Tenta selecionar o serviço se existir na lista, ou deixa padrão
+        document.getElementById('lancar-tab').click(); // Muda a aba
+    }
+
+    // Verifica login ao abrir
+    if(localStorage.getItem('barberUser')) {
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('mainPanel').classList.remove('hidden');
+        atualizarRelatorio();
+        carregarChatbotMock();
+    }
+</script>
+
+</body>
+</html>
