@@ -18,22 +18,45 @@
             --status-open: #00ff88;
             --status-closed: #ff4444;
         }
-        body { background-color: var(--bg-dark); color: var(--text-white); font-family: 'Roboto', sans-serif; font-size: 18px; }
+        body { background-color: var(--bg-dark); color: var(--text-white); font-family: 'Roboto', sans-serif; font-size: 16px; }
+        
+        /* Navbar */
         .navbar { background-color: #000; border-bottom: 2px solid var(--gold-bright); padding: 15px 0; }
-        .navbar-brand { font-family: 'Montserrat', sans-serif; font-weight: 800; color: var(--gold-bright) !important; font-size: 1.5rem; text-transform: uppercase; }
-        .card { background-color: var(--card-bg); border: 1px solid #444; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-        .form-control, .form-select { background-color: #fff !important; color: #000 !important; border: 2px solid #999; font-size: 1.2rem; font-weight: 600; padding: 12px; border-radius: 8px; }
-        .btn-gold { background-color: var(--gold-bright); color: #000; font-weight: 800; padding: 15px; border: none; width: 100%; }
-        .nav-tabs .nav-link { color: #aaa; font-size: 1.1rem; padding: 15px; }
+        .navbar-brand { font-family: 'Montserrat', sans-serif; font-weight: 800; color: var(--gold-bright) !important; font-size: 1.4rem; text-transform: uppercase; }
+        
+        /* Cards */
+        .card { background-color: var(--card-bg); border: 1px solid #444; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .form-control, .form-select { background-color: #fff !important; color: #000 !important; border: 2px solid #999; font-weight: 600; padding: 10px; border-radius: 8px; }
+        .btn-gold { background-color: var(--gold-bright); color: #000; font-weight: 800; padding: 12px; border: none; width: 100%; text-transform: uppercase; }
+        
+        /* Abas */
+        .nav-tabs .nav-link { color: #aaa; padding: 15px; }
         .nav-tabs .nav-link.active { background-color: transparent !important; color: var(--gold-bright) !important; border-bottom: 4px solid var(--gold-bright) !important; }
         
-        .slot-card { background: #333; border: 1px solid #555; padding: 15px; margin-bottom: 10px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .slot-time { font-size: 1.4rem; font-weight: bold; color: white; }
-        .livre { background-color: var(--status-open); width: 15px; height: 15px; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px var(--status-open); }
-        .ocupado { background-color: var(--status-closed); width: 15px; height: 15px; border-radius: 50%; display: inline-block; }
+        /* STATUS LOJA */
         .status-toggle { font-size: 0.8rem; padding: 5px 12px; border-radius: 20px; border: 1px solid #555; cursor: pointer; font-weight: bold; }
         .status-on { background: var(--status-open); color: black; }
         .status-off { background: var(--status-closed); color: white; }
+
+        /* AGENDA CARDS (Novo Design) */
+        .slot-card { 
+            background: #333; border: 1px solid #444; padding: 12px; margin-bottom: 12px; border-radius: 10px; 
+            position: relative; overflow: hidden;
+        }
+        .slot-livre { border-left: 5px solid var(--status-open); }
+        .slot-ocupado { border-left: 5px solid var(--status-closed); }
+        
+        .info-row { display: flex; justify-content: space-between; align-items: center; }
+        .time-badge { font-size: 1.2rem; font-weight: 800; color: #fff; }
+        .client-info { font-size: 0.9rem; color: #ddd; margin-top: 5px; }
+        .service-info { font-size: 0.85rem; color: var(--gold-bright); font-weight: 600; }
+        
+        .btn-cancel { 
+            background: rgba(255, 68, 68, 0.2); color: #ff4444; border: 1px solid #ff4444; 
+            padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; cursor: pointer;
+        }
+        .btn-cancel:hover { background: #ff4444; color: white; }
+
         .hidden { display: none !important; }
     </style>
 </head>
@@ -52,38 +75,41 @@
     <div id="loginScreen" class="card p-4 mx-auto mt-4" style="max-width: 400px;">
         <div class="text-center mb-4"><h2 class="text-gold">LOGIN</h2></div>
         <form onsubmit="fazerLogin(event)">
-            <div class="mb-3"><label class="text-muted">Email</label><input type="email" id="emailLogin" class="form-control" required></div>
-            <div class="mb-4"><label class="text-muted">Senha</label><input type="password" id="senhaLogin" class="form-control" required></div>
-            <button type="submit" class="btn btn-gold rounded-3">ENTRAR</button>
+            <div class="mb-3"><label class="text-muted small">EMAIL</label><input type="email" id="emailLogin" class="form-control" required></div>
+            <div class="mb-4"><label class="text-muted small">SENHA</label><input type="password" id="senhaLogin" class="form-control" required></div>
+            <button type="submit" class="btn btn-gold rounded-3">ACESSAR SISTEMA</button>
         </form>
     </div>
 
     <div id="mainPanel" class="hidden">
         <ul class="nav nav-tabs nav-fill mb-3" id="myTab" role="tablist">
-            <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#agenda">AGENDA</button></li>
+            <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#agenda">AGENDA BOT</button></li>
             <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#lancar">LANÇAR</button></li>
             <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#relatorio">CAIXA</button></li>
         </ul>
 
         <div class="tab-content">
+            
             <div class="tab-pane fade show active" id="agenda">
                 <div class="card p-3">
-                    <h5 class="text-white mb-3">Horários (Bot WhatsApp)</h5>
-                    <div id="listaHorarios"><p class="text-center text-muted">Carregando...</p></div>
+                    <h5 class="text-white mb-3">Agenda de Hoje (WhatsApp)</h5>
+                    <div id="listaHorarios">
+                        <p class="text-center text-muted">Carregando agendamentos...</p>
+                    </div>
                 </div>
             </div>
 
             <div class="tab-pane fade" id="lancar">
                 <div class="card p-3">
                     <form onsubmit="salvarServico(event)">
-                        <div class="mb-3"><label class="text-gold fw-bold">QUEM ATENDEU?</label>
+                        <div class="mb-3"><label class="text-gold fw-bold small">QUEM ATENDEU?</label>
                             <select id="profissionalSelect" class="form-select">
                                 <option value="Fernando">👑 FERNANDO</option>
                                 <option value="Denver">✂️ DENVER</option>
                             </select>
                         </div>
-                        <div class="mb-3"><label class="text-muted">CLIENTE</label><input type="text" id="clienteNome" class="form-control" required></div>
-                        <div class="mb-3"><label class="text-muted">SERVIÇO</label>
+                        <div class="mb-3"><label class="text-muted small">NOME CLIENTE</label><input type="text" id="clienteNome" class="form-control" required></div>
+                        <div class="mb-3"><label class="text-muted small">SERVIÇO</label>
                             <select id="tipoServico" class="form-select">
                                 <option value="Corte Degradê">Corte Degradê</option>
                                 <option value="Corte Social">Corte Social</option>
@@ -91,19 +117,19 @@
                                 <option value="Combo">Cabelo + Barba</option>
                             </select>
                         </div>
-                        <div class="mb-4"><label class="text-muted">VALOR (R$)</label><input type="number" id="valorServico" class="form-control" step="0.01" required></div>
-                        <button type="submit" class="btn btn-gold rounded-3 shadow">SALVAR</button>
+                        <div class="mb-4"><label class="text-muted small">VALOR (R$)</label><input type="number" id="valorServico" class="form-control" step="0.01" required></div>
+                        <button type="submit" class="btn btn-gold rounded-3 shadow">SALVAR CAIXA</button>
                     </form>
                 </div>
             </div>
 
             <div class="tab-pane fade" id="relatorio">
                 <div class="row g-2 mb-3">
-                    <div class="col-6"><div class="card p-3 text-center border-success"><small>DENVER</small><h3 class="text-success" id="saldoDenver">0</h3></div></div>
-                    <div class="col-6"><div class="card p-3 text-center border-warning"><small>FERNANDO</small><h3 class="text-warning" id="saldoFernando">0</h3></div></div>
+                    <div class="col-6"><div class="card p-3 text-center border-success"><small class="fw-bold text-muted">DENVER</small><h3 class="text-success" id="saldoDenver">0</h3></div></div>
+                    <div class="col-6"><div class="card p-3 text-center border-warning"><small class="fw-bold text-muted">FERNANDO</small><h3 class="text-warning" id="saldoFernando">0</h3></div></div>
                 </div>
                 <div class="card p-2">
-                    <table class="table table-dark table-striped mb-0"><tbody id="listaHistorico"></tbody></table>
+                    <table class="table table-dark table-striped mb-0 table-sm"><tbody id="listaHistorico"></tbody></table>
                 </div>
             </div>
         </div> 
@@ -113,9 +139,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, doc, setDoc, onSnapshot, query, where, orderBy, Timestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, doc, deleteDoc, setDoc, onSnapshot, query, where, orderBy, Timestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
+    // --- CONFIGURAÇÃO ---
     const firebaseConfig = {
         apiKey: "AIzaSyDcIDq8AEmL48Z9IFy7-fzBTY6yiFTzTL4",
         authDomain: "appbarber-cf462.firebaseapp.com",
@@ -132,6 +159,7 @@
     const colAgenda = collection(db, "agendamentos");
     const docConfig = doc(db, "configuracao", "status_loja");
 
+    // --- LOGIN ---
     onAuthStateChanged(auth, (user) => {
         if (user) {
             document.getElementById('loginScreen').classList.add('hidden');
@@ -145,17 +173,23 @@
 
     window.fazerLogin = (e) => {
         e.preventDefault();
-        signInWithEmailAndPassword(auth, document.getElementById('emailLogin').value, document.getElementById('senhaLogin').value).catch(err => alert(err.message));
+        signInWithEmailAndPassword(auth, document.getElementById('emailLogin').value, document.getElementById('senhaLogin').value).catch(err => alert("Erro no login: " + err.message));
     }
 
+    // --- AGENDA COM CANCELAMENTO ---
     function iniciarAgenda() {
         const hoje = new Date().toISOString().split('T')[0];
+        
+        // Escuta as mudanças no banco
         onSnapshot(query(colAgenda, where("data", "==", hoje)), (snapshot) => {
-            const agendados = [];
-            const info = {};
-            snapshot.forEach(doc => {
-                agendados.push(doc.data().hora);
-                info[doc.data().hora] = `${doc.data().servico} (${doc.data().status_pagamento})`;
+            
+            // Mapeia os dados do banco
+            const dadosAgenda = {};
+            snapshot.forEach(docSnap => {
+                dadosAgenda[docSnap.data().hora] = {
+                    id: docSnap.id, // ID para poder deletar depois
+                    ...docSnap.data()
+                };
             });
 
             const horarios = ["09:00", "10:00", "11:00", "12:00"];
@@ -163,26 +197,56 @@
             div.innerHTML = '';
 
             horarios.forEach(h => {
-                const ocupado = agendados.includes(h);
-                const status = ocupado ? 'OCUPADO' : 'LIVRE';
-                const cor = ocupado ? 'ocupado' : 'livre';
-                const detalhe = ocupado ? info[h] : '';
+                const agendamento = dadosAgenda[h];
                 
-                div.innerHTML += `
-                    <div class="slot-card">
-                        <div>
-                            <div class="slot-time">${h}</div>
-                            <div style="font-size:0.8rem; color:#aaa;">${detalhe}</div>
-                        </div>
-                        <div class="text-end">
-                            <span class="${cor}"></span>
-                            <div style="font-size:0.7rem;">${status}</div>
-                        </div>
-                    </div>`;
+                if (agendamento) {
+                    // SE ESTIVER OCUPADO
+                    const telefoneFormatado = agendamento.telefone ? agendamento.telefone.replace('@c.us', '') : 'S/ Tel';
+                    
+                    div.innerHTML += `
+                        <div class="slot-card slot-ocupado">
+                            <div class="info-row mb-2">
+                                <span class="time-badge">${h}</span>
+                                <button class="btn-cancel" onclick="cancelarAgendamento('${agendamento.id}', '${h}')">
+                                    <i class="bi bi-trash"></i> Cancelar
+                                </button>
+                            </div>
+                            <div class="client-info">
+                                <i class="bi bi-person-fill"></i> ${agendamento.cliente || 'Cliente Zap'}<br>
+                                <i class="bi bi-whatsapp"></i> ${telefoneFormatado}
+                            </div>
+                            <div class="service-info mt-1">
+                                <i class="bi bi-scissors"></i> ${agendamento.servico}
+                            </div>
+                        </div>`;
+                } else {
+                    // SE ESTIVER LIVRE
+                    div.innerHTML += `
+                        <div class="slot-card slot-livre">
+                            <div class="info-row">
+                                <span class="time-badge text-muted">${h}</span>
+                                <span class="badge bg-success">LIVRE</span>
+                            </div>
+                            <div class="text-muted small mt-1">Disponível para o Robô</div>
+                        </div>`;
+                }
             });
         });
     }
 
+    // --- FUNÇÃO DE CANCELAR (NOVA) ---
+    window.cancelarAgendamento = async (id, hora) => {
+        if(confirm(`Tem certeza que deseja cancelar o horário das ${hora}?\nIsso vai liberar o horário no Robô.`)) {
+            try {
+                await deleteDoc(doc(db, "agendamentos", id));
+                // Não precisa de alert, o onSnapshot atualiza a tela sozinho
+            } catch (error) {
+                alert("Erro ao cancelar: " + error.message);
+            }
+        }
+    }
+
+    // --- STATUS LOJA ---
     function monitorarStatus() {
         onSnapshot(docConfig, (doc) => {
             const btn = document.getElementById('btnStatusLoja');
@@ -200,6 +264,7 @@
         await setDoc(docConfig, { aberto: novoStatus, mensagem: novoStatus ? "Aberto!" : "Fechado." });
     };
 
+    // --- FINANCEIRO ---
     window.salvarServico = async (e) => {
         e.preventDefault();
         const prof = document.getElementById('profissionalSelect').value;
@@ -212,7 +277,7 @@
             servico: document.getElementById('tipoServico').value, total: val,
             ganho_denver: d, ganho_fernando: f, data: Timestamp.now()
         });
-        alert("Lançado!");
+        alert("Caixa atualizado!");
         document.getElementById('clienteNome').value = '';
         document.getElementById('valorServico').value = '';
     }
@@ -226,7 +291,7 @@
             snap.forEach(d => itens.push(d.data()));
             itens.reverse().forEach(i => {
                 td += i.ganho_denver; tf += i.ganho_fernando;
-                tb.innerHTML += `<tr><td>${i.profissional.substring(0,3)}</td><td>${i.cliente}</td><td>R$${i.total}</td></tr>`;
+                tb.innerHTML += `<tr><td>${i.profissional.substring(0,3)}</td><td>${i.cliente}</td><td class="text-end">R$${i.total}</td></tr>`;
             });
             document.getElementById('saldoDenver').innerText = td.toFixed(0);
             document.getElementById('saldoFernando').innerText = tf.toFixed(0);
