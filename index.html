@@ -3,237 +3,255 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BarberApp - Fernando & Denver</title>
+    <title>BarberApp - Visibilidade Alta</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Roboto:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 
     <style>
         :root {
-            --primary-gold: #D4AF37;
-            --bg-dark: #121212;
-            --card-dark: #1E1E1E;
-            --text-light: #ffffff;
-            --text-muted: #cccccc;
+            /* Cores de Alto Contraste */
+            --gold-bright: #FFD700; /* Amarelo Ouro Vivo */
+            --bg-dark: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --text-white: #ffffff;
+            --input-bg: #ffffff; /* Fundo BRANCO para inputs */
+            --input-text: #000000; /* Texto PRETO para inputs */
         }
 
         body {
             background-color: var(--bg-dark);
-            color: var(--text-light);
-            font-family: 'Open Sans', sans-serif;
-            font-size: 16px;
+            color: var(--text-white);
+            font-family: 'Roboto', sans-serif; /* Fonte mais robusta para leitura */
+            font-size: 18px; /* Fonte base maior */
         }
 
-        /* Navbar */
+        /* Navbar com contraste */
         .navbar {
-            background: #1E1E1E;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            background-color: #000;
+            border-bottom: 2px solid var(--gold-bright);
             padding: 15px 0;
-            z-index: 1000;
         }
         .navbar-brand {
-            color: var(--primary-gold) !important;
             font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            text-transform: uppercase;
+            font-weight: 800;
+            color: var(--gold-bright) !important;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
         }
 
-        .main-container {
-            margin-top: 20px;
-            padding-bottom: 80px;
-        }
-
-        /* Cards e Inputs */
+        /* Cards e Layout */
         .card {
-            background-color: var(--card-dark);
-            border: 1px solid #333;
-            border-radius: 12px;
+            background-color: var(--card-bg);
+            border: 1px solid #444;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
 
-        label { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 5px; font-weight: 600; }
+        /* Títulos de Seção */
+        h1, h2, h3, h4, h5 {
+            color: var(--text-white);
+            font-weight: 700;
+        }
+
+        /* --- MUDANÇA PRINCIPAL: INPUTS BRANCOS --- */
+        label {
+            color: #ccc; /* Cinza claro */
+            font-size: 1rem;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
         .form-control, .form-select {
-            background-color: #2C2C2C;
-            border: 1px solid #444;
-            color: #fff !important;
-            font-size: 1rem;
+            background-color: var(--input-bg) !important;
+            color: var(--input-text) !important;
+            border: 2px solid #999;
+            font-size: 1.2rem; /* Letra grande ao digitar */
+            font-weight: 600;
+            padding: 12px;
             border-radius: 8px;
-            padding: 12px;
         }
+        
         .form-control:focus, .form-select:focus {
-            background-color: #333;
-            border-color: var(--primary-gold);
-            color: #fff !important;
-            box-shadow: none;
+            border-color: var(--gold-bright);
+            box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.3);
         }
 
-        /* Botões */
+        /* Botões Gigantes */
         .btn-gold {
-            background: var(--primary-gold);
-            border: none;
+            background-color: var(--gold-bright);
             color: #000;
-            font-weight: 700;
+            font-weight: 800;
+            font-size: 1.2rem;
             text-transform: uppercase;
+            padding: 15px;
+            border: none;
         }
-        .btn-gold:hover { background: #b59024; color: #000; }
+        .btn-gold:hover {
+            background-color: #ffed4a;
+            transform: scale(1.02);
+        }
 
-        /* Abas */
-        .nav-tabs { border-bottom: 1px solid #333; margin-bottom: 20px; }
-        .nav-link { 
-            color: var(--text-muted); 
-            border: none; 
-            font-weight: 600; 
-            padding: 12px;
+        /* Abas Grandes */
+        .nav-tabs .nav-link {
+            color: #aaa;
+            font-size: 1.1rem;
+            padding: 15px;
         }
-        .nav-link.active {
+        .nav-tabs .nav-link.active {
             background-color: transparent !important;
-            color: var(--primary-gold) !important;
-            border-bottom: 3px solid var(--primary-gold) !important;
+            color: var(--gold-bright) !important;
+            border-bottom: 4px solid var(--gold-bright) !important;
+            font-weight: bold;
         }
-
-        /* Badges de Profissional */
-        .badge-fernando { background-color: var(--primary-gold); color: #000; }
-        .badge-denver { background-color: #28a745; color: #fff; }
 
         /* Utilitários */
         .hidden { display: none !important; }
-        .text-gold { color: var(--primary-gold) !important; }
-        .table { --bs-table-color: var(--text-muted); }
-        .table-dark { --bs-table-bg: #252525; }
+        .text-gold { color: var(--gold-bright) !important; }
         
-        /* Animação */
-        .fade-in { animation: fadeIn 0.5s ease-in; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Badges de Profissional (Grandes) */
+        .badge-pro { font-size: 0.9rem; padding: 8px 12px; }
+        .bg-fernando { background-color: var(--gold-bright); color: #000; }
+        .bg-denver { background-color: #00ff88; color: #000; }
+
+        /* Tabela Legível */
+        .table-custom tr td {
+            background-color: #2d2d2d;
+            color: white;
+            font-size: 1.1rem;
+            padding: 12px 8px;
+            border-bottom: 1px solid #444;
+            vertical-align: middle;
         }
     </style>
 </head>
 <body>
 
-<nav class="navbar navbar-dark sticky-top">
+<nav class="navbar sticky-top">
     <div class="container d-flex justify-content-between align-items-center">
-        <span class="navbar-brand mb-0"><i class="bi bi-scissors"></i> Barber<span class="text-white">App</span></span>
-        <button id="btnSair" class="btn btn-outline-light btn-sm rounded-pill px-3 hidden" onclick="logout()">
-            <i class="bi bi-box-arrow-right"></i> Sair
+        <span class="navbar-brand mb-0">BARBER<span class="text-white">APP</span></span>
+        <button id="btnSair" class="btn btn-outline-light btn-sm fw-bold hidden" onclick="logout()">
+            SAIR
         </button>
     </div>
 </nav>
 
-<div class="container main-container">
+<div class="container mt-3 pb-5">
 
-    <div id="loginScreen" class="card p-4 mx-auto mt-5" style="max-width: 400px;">
+    <div id="loginScreen" class="card p-4 mx-auto mt-4" style="max-width: 400px;">
         <div class="text-center mb-4">
-            <h1 class="text-gold"><i class="bi bi-shield-lock"></i></h1>
-            <h4>Acesso Restrito</h4>
-            <p class="text-muted small">Login do sistema</p>
+            <h2 class="text-gold">LOGIN</h2>
+            <p class="text-white">Entre para começar</p>
         </div>
         
         <form onsubmit="fazerLogin(event)">
             <div class="mb-3">
                 <label>Email</label>
-                <input type="email" id="emailLogin" class="form-control" placeholder="admin@barber.com" required>
+                <input type="email" id="emailLogin" class="form-control" placeholder="Digite seu email" required>
             </div>
             <div class="mb-4">
                 <label>Senha</label>
-                <input type="password" id="senhaLogin" class="form-control" placeholder="******" required>
+                <input type="password" id="senhaLogin" class="form-control" placeholder="Sua senha" required>
             </div>
             <div class="d-grid">
-                <button type="submit" class="btn btn-gold py-3 rounded-pill shadow">Entrar</button>
+                <button type="submit" class="btn btn-gold rounded-3">ENTRAR</button>
             </div>
-            <div id="loginError" class="text-danger text-center mt-3 small hidden"></div>
+            <div id="loginError" class="text-danger text-center mt-3 fw-bold hidden"></div>
         </form>
     </div>
 
     <div id="mainPanel" class="hidden fade-in">
         
-        <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="lancar-tab" data-bs-toggle="tab" data-bs-target="#lancar" type="button" role="tab">
-                    <i class="bi bi-plus-circle"></i> Lançar
+        <ul class="nav nav-tabs nav-fill mb-3" id="myTab" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link active" id="lancar-tab" data-bs-toggle="tab" data-bs-target="#lancar" type="button">
+                    LANÇAR
                 </button>
             </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="relatorio-tab" data-bs-toggle="tab" data-bs-target="#relatorio" type="button" role="tab">
-                    <i class="bi bi-graph-up"></i> Caixas
+            <li class="nav-item">
+                <button class="nav-link" id="relatorio-tab" data-bs-toggle="tab" data-bs-target="#relatorio" type="button">
+                    CAIXA
                 </button>
             </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="chatbot-tab" data-bs-toggle="tab" data-bs-target="#chatbot" type="button" role="tab">
-                    <i class="bi bi-whatsapp"></i> Bot <span id="chatBadge" class="badge bg-danger rounded-pill ms-1">0</span>
+            <li class="nav-item">
+                <button class="nav-link" id="chatbot-tab" data-bs-toggle="tab" data-bs-target="#chatbot" type="button">
+                    ZAP
                 </button>
             </li>
         </ul>
 
-        <div class="tab-content" id="myTabContent">
+        <div class="tab-content">
             
-            <div class="tab-pane fade show active" id="lancar" role="tabpanel">
-                <div class="card p-4">
-                    <h5 class="mb-3 text-gold border-bottom border-secondary pb-2">Novo Atendimento</h5>
+            <div class="tab-pane fade show active" id="lancar">
+                <div class="card p-3">
                     <form onsubmit="salvarServico(event)">
                         
                         <div class="mb-3">
-                            <label class="text-warning">Quem cortou?</label>
-                            <select id="profissionalSelect" class="form-select form-select-lg" style="border: 2px solid #555;">
-                                <option value="Fernando">👑 Fernando (Dono)</option>
-                                <option value="Denver">✂️ Denver (Colaborador)</option>
+                            <label class="text-gold fw-bold">QUEM CORTOU?</label>
+                            <select id="profissionalSelect" class="form-select" style="font-weight: 800;">
+                                <option value="Fernando">👑 FERNANDO (DONO)</option>
+                                <option value="Denver">✂️ DENVER (COLAB)</option>
                             </select>
                         </div>
 
                         <div class="mb-3">
-                            <label>Cliente</label>
-                            <input type="text" id="clienteNome" class="form-control" placeholder="Nome do cliente..." required>
+                            <label>NOME DO CLIENTE</label>
+                            <input type="text" id="clienteNome" class="form-control" placeholder="Ex: João" required>
                         </div>
+                        
                         <div class="mb-3">
-                            <label>Serviço</label>
+                            <label>SERVIÇO</label>
                             <select id="tipoServico" class="form-select">
                                 <option value="Corte Degradê">Corte Degradê</option>
                                 <option value="Corte Social">Corte Social</option>
                                 <option value="Barba">Barba</option>
-                                <option value="Corte + Barba">Corte + Barba</option>
+                                <option value="Corte + Barba">Combo (Corte+Barba)</option>
                                 <option value="Sobrancelha">Sobrancelha</option>
                             </select>
                         </div>
+
                         <div class="mb-4">
-                            <label>Valor (R$)</label>
-                            <input type="number" id="valorServico" class="form-control" placeholder="0.00" step="0.01" required>
+                            <label>VALOR (R$)</label>
+                            <input type="number" id="valorServico" class="form-control" placeholder="0,00" step="0.01" inputmode="decimal" required>
                         </div>
+
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-gold py-3 rounded-pill">Salvar Lançamento</button>
+                            <button type="submit" class="btn btn-gold rounded-3 shadow">
+                                SALVAR LANÇAMENTO
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <div class="tab-pane fade" id="relatorio" role="tabpanel">
+            <div class="tab-pane fade" id="relatorio">
                 
                 <div class="row g-2 mb-3">
                     <div class="col-6">
-                        <div class="card p-3 text-center bg-dark border-success h-100">
-                            <small class="text-success fw-bold">SALDO DENVER</small>
-                            <div class="small text-muted mb-1">(60% Comissões)</div>
-                            <h3 class="text-white">R$ <span id="saldoDenver">0.00</span></h3>
+                        <div class="card p-3 text-center" style="border: 2px solid #00ff88;">
+                            <small class="text-uppercase fw-bold text-white">Denver (60%)</small>
+                            <h2 style="color: #00ff88;">R$<span id="saldoDenver">0</span></h2>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="card p-3 text-center bg-dark border-warning h-100">
-                            <small class="text-gold fw-bold">SALDO FERNANDO</small>
-                            <div class="small text-muted mb-1">(Cortes Próprios + 40%)</div>
-                            <h3 class="text-white">R$ <span id="saldoFernando">0.00</span></h3>
+                        <div class="card p-3 text-center" style="border: 2px solid var(--gold-bright);">
+                            <small class="text-uppercase fw-bold text-white">Fernando (Total)</small>
+                            <h2 class="text-gold">R$<span id="saldoFernando">0</span></h2>
                         </div>
                     </div>
                 </div>
 
-                <div class="card p-3">
-                    <h6 class="text-white mb-3">Histórico de Hoje</h6>
+                <div class="card p-2">
+                    <h5 class="text-white p-2 mb-0">Histórico de Hoje</h5>
                     <div class="table-responsive">
-                        <table class="table table-dark table-striped table-sm align-middle mb-0">
+                        <table class="table table-custom w-100 mb-0">
                             <thead>
-                                <tr class="text-muted small">
-                                    <th>Profis.</th>
-                                    <th>Cli.</th>
-                                    <th>Valor</th>
+                                <tr style="color: #888; font-size: 0.8rem;">
+                                    <th>QUEM</th>
+                                    <th>CLI.</th>
+                                    <th class="text-end">VALOR</th>
                                 </tr>
                             </thead>
                             <tbody id="listaHistorico">
@@ -243,11 +261,8 @@
                 </div>
             </div>
 
-            <div class="tab-pane fade" id="chatbot" role="tabpanel">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="text-white mb-0">Fila WhatsApp</h5>
-                    <span class="badge bg-success">Online</span>
-                </div>
+            <div class="tab-pane fade" id="chatbot">
+                <h5 class="text-white mb-3">Fila de Espera</h5>
                 <div id="chatbotList" class="list-group">
                     </div>
             </div>
@@ -263,7 +278,7 @@
     import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, Timestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    // --- CONFIGURAÇÃO FIREBASE ---
+    // --- SEU FIREBASE CONFIG (MANTIDO) ---
     const firebaseConfig = {
         apiKey: "AIzaSyDcIDq8AEmL48Z9IFy7-fzBTY6yiFTzTL4",
         authDomain: "appbarber-cf462.firebaseapp.com",
@@ -303,7 +318,7 @@
         errorMsg.classList.add('hidden');
         signInWithEmailAndPassword(auth, email, pass)
             .catch((error) => {
-                errorMsg.innerText = "Erro: " + error.message;
+                errorMsg.innerText = "Erro: Verifique email e senha.";
                 errorMsg.classList.remove('hidden');
             });
     }
@@ -312,11 +327,11 @@
         signOut(auth).then(() => location.reload());
     }
 
-    // --- SALVAR COM REGRA DE COMISSÃO ---
+    // --- SALVAR (REGRA 60/40) ---
     window.salvarServico = async function(e) {
         e.preventDefault();
         
-        const profissional = document.getElementById('profissionalSelect').value; // Fernando ou Denver
+        const profissional = document.getElementById('profissionalSelect').value;
         const cliente = document.getElementById('clienteNome').value;
         const servico = document.getElementById('tipoServico').value;
         const valorTotal = parseFloat(document.getElementById('valorServico').value);
@@ -326,13 +341,10 @@
         let ganhoDenver = 0;
         let ganhoFernando = 0;
 
-        // REGRA DE NEGÓCIO
         if (profissional === "Denver") {
-            // Se Denver cortou: 60% dele, 40% Fernando
             ganhoDenver = valorTotal * 0.60;
             ganhoFernando = valorTotal * 0.40;
         } else {
-            // Se Fernando cortou: 100% Fernando (Dono)
             ganhoDenver = 0;
             ganhoFernando = valorTotal;
         }
@@ -348,17 +360,19 @@
                 data: Timestamp.now()
             });
             
-            alert(`✅ Lançado para ${profissional}!`);
+            // Feedback simples e visual
+            alert(`✅ SALVO!\nProfissional: ${profissional}\nValor: R$ ${valorTotal}`);
+            
             document.getElementById('clienteNome').value = '';
             document.getElementById('valorServico').value = '';
             document.getElementById('clienteNome').focus();
 
         } catch (error) {
-            alert("Erro ao salvar: " + error.message);
+            alert("Erro de conexão.");
         }
     }
 
-    // --- RELATÓRIO INTELIGENTE ---
+    // --- LEITURA DO BANCO ---
     function iniciarEscutaEmTempoReal() {
         const q = query(colecaoVendas, orderBy("data", "asc"));
 
@@ -371,46 +385,52 @@
             const vendas = [];
             snapshot.forEach((doc) => vendas.push({ id: doc.id, ...doc.data() }));
 
+            // Mostra mais recente em cima
             vendas.reverse().forEach(item => {
-                // Soma os ganhos individuais salvos no banco
                 saldoD += item.ganho_denver || 0;
                 saldoF += item.ganho_fernando || 0;
 
-                // Define cor do badge
-                let badgeClass = item.profissional === 'Fernando' ? 'badge-fernando' : 'badge-denver';
+                let badgeClass = item.profissional === 'Fernando' ? 'bg-fernando' : 'bg-denver';
                 let nomeProf = item.profissional === 'Fernando' ? 'FER' : 'DEN';
 
                 let row = `<tr>
-                    <td><span class="badge ${badgeClass}">${nomeProf}</span></td>
-                    <td class="text-white small">${item.cliente}<br><span class="text-muted" style="font-size:0.75rem">${item.servico}</span></td>
-                    <td class="text-gold">R$${item.total.toFixed(0)}</td>
+                    <td><span class="badge badge-pro ${badgeClass}">${nomeProf}</span></td>
+                    <td>
+                        <div class="fw-bold">${item.cliente}</div>
+                        <div style="font-size: 0.8rem; color: #aaa;">${item.servico}</div>
+                    </td>
+                    <td class="text-end fw-bold text-gold">R$${item.total.toFixed(0)}</td>
                 </tr>`;
                 tbody.innerHTML += row;
             });
 
-            document.getElementById('saldoDenver').innerText = saldoD.toFixed(2);
-            document.getElementById('saldoFernando').innerText = saldoF.toFixed(2);
+            document.getElementById('saldoDenver').innerText = saldoD.toFixed(0); // Sem centavos no card pra facilitar leitura
+            document.getElementById('saldoFernando').innerText = saldoF.toFixed(0);
         });
     }
 
     // --- MOCK CHATBOT ---
     window.carregarChatbotMock = function() {
         const pedidos = [
-            { cliente: "Carlos", servico: "Corte", hora: "14:30" },
-            { cliente: "Pedro", servico: "Barba", hora: "15:00" }
+            { cliente: "Carlos (Zap)", servico: "Corte", hora: "14:30" },
+            { cliente: "Pedro (Site)", servico: "Barba", hora: "15:00" }
         ];
         const lista = document.getElementById('chatbotList');
-        const badge = document.getElementById('chatBadge');
+        
         if(lista) {
             lista.innerHTML = '';
             pedidos.forEach(p => {
                 lista.innerHTML += `
-                    <div class="list-group-item d-flex justify-content-between align-items-center p-3">
-                        <div><div class="fw-bold text-white">${p.cliente}</div><div class="small text-muted">${p.servico}</div></div>
-                        <button class="btn btn-sm btn-outline-success" onclick="importarPedido('${p.cliente}')">Lançar</button>
+                    <div class="list-group-item d-flex justify-content-between align-items-center p-3 mb-2 bg-dark border-secondary">
+                        <div>
+                            <div class="fw-bold text-white fs-5">${p.cliente}</div>
+                            <div class="text-muted">${p.servico} - ${p.hora}</div>
+                        </div>
+                        <button class="btn btn-success fw-bold" onclick="importarPedido('${p.cliente}')">
+                            LANÇAR
+                        </button>
                     </div>`;
             });
-            badge.innerText = pedidos.length;
         }
     }
 
