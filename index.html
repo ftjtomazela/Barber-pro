@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BarberApp - Agenda & Caixa</title>
+    <title>Barbearia Merigio - Gestão</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Roboto:wght@500;700&display=swap" rel="stylesheet">
@@ -18,45 +18,22 @@
             --status-open: #00ff88;
             --status-closed: #ff4444;
         }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-white);
-            font-family: 'Roboto', sans-serif;
-            font-size: 18px;
-        }
-
+        body { background-color: var(--bg-dark); color: var(--text-white); font-family: 'Roboto', sans-serif; font-size: 18px; }
         .navbar { background-color: #000; border-bottom: 2px solid var(--gold-bright); padding: 15px 0; }
-        .navbar-brand { font-family: 'Montserrat', sans-serif; font-weight: 800; color: var(--gold-bright) !important; font-size: 1.8rem; }
-
+        .navbar-brand { font-family: 'Montserrat', sans-serif; font-weight: 800; color: var(--gold-bright) !important; font-size: 1.5rem; text-transform: uppercase; }
         .card { background-color: var(--card-bg); border: 1px solid #444; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-        
-        label { color: #ccc; margin-bottom: 5px; text-transform: uppercase; font-size: 0.9rem; }
-        .form-control, .form-select {
-            background-color: #fff !important; color: #000 !important; border: 2px solid #999;
-            font-size: 1.2rem; font-weight: 600; padding: 12px; border-radius: 8px;
-        }
-        
+        .form-control, .form-select { background-color: #fff !important; color: #000 !important; border: 2px solid #999; font-size: 1.2rem; font-weight: 600; padding: 12px; border-radius: 8px; }
         .btn-gold { background-color: var(--gold-bright); color: #000; font-weight: 800; padding: 15px; border: none; width: 100%; }
-        
-        /* Abas */
         .nav-tabs .nav-link { color: #aaa; font-size: 1.1rem; padding: 15px; }
         .nav-tabs .nav-link.active { background-color: transparent !important; color: var(--gold-bright) !important; border-bottom: 4px solid var(--gold-bright) !important; }
-
-        /* Estilo da Agenda */
-        .slot-card {
-            background: #333; border: 1px solid #555; padding: 15px; margin-bottom: 10px; border-radius: 10px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
+        
+        .slot-card { background: #333; border: 1px solid #555; padding: 15px; margin-bottom: 10px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; }
         .slot-time { font-size: 1.4rem; font-weight: bold; color: white; }
-        .slot-status { width: 20px; height: 20px; border-radius: 50%; display: inline-block; }
-        .livre { background-color: var(--status-open); box-shadow: 0 0 10px var(--status-open); }
-        .ocupado { background-color: var(--status-closed); }
-
-        .status-toggle { font-size: 0.8rem; padding: 5px 10px; border-radius: 20px; border: 1px solid #555; cursor: pointer; }
-        .status-on { background: var(--status-open); color: black; font-weight: bold; }
+        .livre { background-color: var(--status-open); width: 15px; height: 15px; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px var(--status-open); }
+        .ocupado { background-color: var(--status-closed); width: 15px; height: 15px; border-radius: 50%; display: inline-block; }
+        .status-toggle { font-size: 0.8rem; padding: 5px 12px; border-radius: 20px; border: 1px solid #555; cursor: pointer; font-weight: bold; }
+        .status-on { background: var(--status-open); color: black; }
         .status-off { background: var(--status-closed); color: white; }
-
         .hidden { display: none !important; }
     </style>
 </head>
@@ -64,67 +41,57 @@
 
 <nav class="navbar sticky-top">
     <div class="container d-flex justify-content-between align-items-center">
-        <span class="navbar-brand mb-0">BARBER<span class="text-white">APP</span></span>
-        
+        <span class="navbar-brand mb-0">BARBEARIA <span class="text-white">MERIGIO</span></span>
         <div id="lojaStatusContainer" class="hidden">
-            <button id="btnStatusLoja" class="btn btn-sm status-toggle status-on" onclick="alternarStatusLoja()">
-                ABERTO
-            </button>
+            <button id="btnStatusLoja" class="btn btn-sm status-toggle status-on" onclick="alternarStatusLoja()">ABERTO</button>
         </div>
     </div>
 </nav>
 
 <div class="container mt-3 pb-5">
-
     <div id="loginScreen" class="card p-4 mx-auto mt-4" style="max-width: 400px;">
         <div class="text-center mb-4"><h2 class="text-gold">LOGIN</h2></div>
         <form onsubmit="fazerLogin(event)">
-            <div class="mb-3"><label>Email</label><input type="email" id="emailLogin" class="form-control" required></div>
-            <div class="mb-4"><label>Senha</label><input type="password" id="senhaLogin" class="form-control" required></div>
+            <div class="mb-3"><label class="text-muted">Email</label><input type="email" id="emailLogin" class="form-control" required></div>
+            <div class="mb-4"><label class="text-muted">Senha</label><input type="password" id="senhaLogin" class="form-control" required></div>
             <button type="submit" class="btn btn-gold rounded-3">ENTRAR</button>
         </form>
     </div>
 
-    <div id="mainPanel" class="hidden fade-in">
+    <div id="mainPanel" class="hidden">
         <ul class="nav nav-tabs nav-fill mb-3" id="myTab" role="tablist">
-            <li class="nav-item"><button class="nav-link active" id="agenda-tab" data-bs-toggle="tab" data-bs-target="#agenda">AGENDA</button></li>
-            <li class="nav-item"><button class="nav-link" id="lancar-tab" data-bs-toggle="tab" data-bs-target="#lancar">LANÇAR</button></li>
-            <li class="nav-item"><button class="nav-link" id="relatorio-tab" data-bs-toggle="tab" data-bs-target="#relatorio">CAIXA</button></li>
+            <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#agenda">AGENDA</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#lancar">LANÇAR</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#relatorio">CAIXA</button></li>
         </ul>
 
         <div class="tab-content">
-            
             <div class="tab-pane fade show active" id="agenda">
                 <div class="card p-3">
-                    <h5 class="text-white mb-3">Horários de Hoje</h5>
-                    <div id="listaHorarios">
-                        <p class="text-center text-muted">Carregando agenda...</p>
-                    </div>
-                    <div class="mt-3 text-center">
-                        <small class="text-muted">Esses horários são sincronizados com o WhatsApp.</small>
-                    </div>
+                    <h5 class="text-white mb-3">Horários (Bot WhatsApp)</h5>
+                    <div id="listaHorarios"><p class="text-center text-muted">Carregando...</p></div>
                 </div>
             </div>
 
             <div class="tab-pane fade" id="lancar">
                 <div class="card p-3">
                     <form onsubmit="salvarServico(event)">
-                        <div class="mb-3">
-                            <label class="text-gold fw-bold">QUEM CORTOU?</label>
+                        <div class="mb-3"><label class="text-gold fw-bold">QUEM ATENDEU?</label>
                             <select id="profissionalSelect" class="form-select">
                                 <option value="Fernando">👑 FERNANDO</option>
                                 <option value="Denver">✂️ DENVER</option>
                             </select>
                         </div>
-                        <div class="mb-3"><label>CLIENTE</label><input type="text" id="clienteNome" class="form-control" required></div>
-                        <div class="mb-3"><label>SERVIÇO</label>
+                        <div class="mb-3"><label class="text-muted">CLIENTE</label><input type="text" id="clienteNome" class="form-control" required></div>
+                        <div class="mb-3"><label class="text-muted">SERVIÇO</label>
                             <select id="tipoServico" class="form-select">
                                 <option value="Corte Degradê">Corte Degradê</option>
+                                <option value="Corte Social">Corte Social</option>
                                 <option value="Barba">Barba</option>
-                                <option value="Completo">Corte + Barba</option>
+                                <option value="Combo">Cabelo + Barba</option>
                             </select>
                         </div>
-                        <div class="mb-4"><label>VALOR (R$)</label><input type="number" id="valorServico" class="form-control" step="0.01" required></div>
+                        <div class="mb-4"><label class="text-muted">VALOR (R$)</label><input type="number" id="valorServico" class="form-control" step="0.01" required></div>
                         <button type="submit" class="btn btn-gold rounded-3 shadow">SALVAR</button>
                     </form>
                 </div>
@@ -136,18 +103,14 @@
                     <div class="col-6"><div class="card p-3 text-center border-warning"><small>FERNANDO</small><h3 class="text-warning" id="saldoFernando">0</h3></div></div>
                 </div>
                 <div class="card p-2">
-                    <table class="table table-dark table-striped mb-0">
-                        <tbody id="listaHistorico"></tbody>
-                    </table>
+                    <table class="table table-dark table-striped mb-0"><tbody id="listaHistorico"></tbody></table>
                 </div>
             </div>
-
         </div> 
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, addDoc, doc, setDoc, onSnapshot, query, where, orderBy, Timestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -165,107 +128,82 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
-    
-    // Coleções
     const colVendas = collection(db, "lancamentos");
     const colAgenda = collection(db, "agendamentos");
     const docConfig = doc(db, "configuracao", "status_loja");
 
-    // --- LOGIN ---
     onAuthStateChanged(auth, (user) => {
         if (user) {
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('mainPanel').classList.remove('hidden');
             document.getElementById('lojaStatusContainer').classList.remove('hidden');
-            iniciarAgendaTempoReal();
-            iniciarFinanceiroTempoReal();
-            monitorarStatusLoja();
+            iniciarAgenda();
+            iniciarFinanceiro();
+            monitorarStatus();
         }
     });
 
     window.fazerLogin = (e) => {
         e.preventDefault();
-        signInWithEmailAndPassword(auth, document.getElementById('emailLogin').value, document.getElementById('senhaLogin').value)
-            .catch(err => alert("Erro: " + err.message));
+        signInWithEmailAndPassword(auth, document.getElementById('emailLogin').value, document.getElementById('senhaLogin').value).catch(err => alert(err.message));
     }
 
-    // --- LÓGICA DA AGENDA (VISUAL) ---
-    function iniciarAgendaTempoReal() {
-        // Pega data de hoje formato YYYY-MM-DD
+    function iniciarAgenda() {
         const hoje = new Date().toISOString().split('T')[0];
-        
-        // Escuta agendamentos de hoje
-        const q = query(colAgenda, where("data", "==", hoje));
-
-        onSnapshot(q, (snapshot) => {
+        onSnapshot(query(colAgenda, where("data", "==", hoje)), (snapshot) => {
             const agendados = [];
-            snapshot.forEach(doc => agendados.push(doc.data().hora));
+            const info = {};
+            snapshot.forEach(doc => {
+                agendados.push(doc.data().hora);
+                info[doc.data().hora] = `${doc.data().servico} (${doc.data().status_pagamento})`;
+            });
 
-            const horariosPossiveis = ["09:00", "10:00", "11:00", "12:00"]; // Pode adicionar mais
-            const divAgenda = document.getElementById('listaHorarios');
-            divAgenda.innerHTML = '';
+            const horarios = ["09:00", "10:00", "11:00", "12:00"];
+            const div = document.getElementById('listaHorarios');
+            div.innerHTML = '';
 
-            horariosPossiveis.forEach(hora => {
-                const ocupado = agendados.includes(hora);
-                const statusClass = ocupado ? 'ocupado' : 'livre';
-                const textoStatus = ocupado ? 'OCUPADO' : 'DISPONÍVEL';
+            horarios.forEach(h => {
+                const ocupado = agendados.includes(h);
+                const status = ocupado ? 'OCUPADO' : 'LIVRE';
+                const cor = ocupado ? 'ocupado' : 'livre';
+                const detalhe = ocupado ? info[h] : '';
                 
-                // Se ocupado, tentar achar quem é
-                let clienteInfo = '';
-                if(ocupado) {
-                    snapshot.forEach(doc => {
-                        if(doc.data().hora === hora) clienteInfo = `- ${doc.data().cliente}`;
-                    });
-                }
-
-                divAgenda.innerHTML += `
+                div.innerHTML += `
                     <div class="slot-card">
                         <div>
-                            <div class="slot-time">${hora}</div>
-                            <small class="text-muted">${clienteInfo}</small>
+                            <div class="slot-time">${h}</div>
+                            <div style="font-size:0.8rem; color:#aaa;">${detalhe}</div>
                         </div>
                         <div class="text-end">
-                            <span class="slot-status ${statusClass}"></span>
-                            <div style="font-size:0.7rem; color:#aaa;">${textoStatus}</div>
+                            <span class="${cor}"></span>
+                            <div style="font-size:0.7rem;">${status}</div>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
         });
     }
 
-    // --- CONTROLE DA LOJA (ABRIR/FECHAR PARA O BOT) ---
-    function monitorarStatusLoja() {
-        onSnapshot(docConfig, (docSnap) => {
+    function monitorarStatus() {
+        onSnapshot(docConfig, (doc) => {
             const btn = document.getElementById('btnStatusLoja');
-            if (docSnap.exists() && docSnap.data().aberto) {
-                btn.innerText = "ABERTO (ONLINE)";
-                btn.className = "btn btn-sm status-toggle status-on";
+            if (doc.exists() && doc.data().aberto) {
+                btn.innerText = "ABERTO"; btn.className = "btn btn-sm status-toggle status-on";
             } else {
-                btn.innerText = "FECHADO / ALMOÇO";
-                btn.className = "btn btn-sm status-toggle status-off";
+                btn.innerText = "FECHADO"; btn.className = "btn btn-sm status-toggle status-off";
             }
         });
     }
 
     window.alternarStatusLoja = async () => {
-        // Lê estado atual e inverte
-        // Obs: Em produção, ideal ler antes de escrever, mas aqui vamos simplificar
         const btn = document.getElementById('btnStatusLoja');
-        const novoStatus = btn.innerText.includes("FECHADO"); // Se tá fechado, vai abrir
-        
-        await setDoc(docConfig, { 
-            aberto: novoStatus,
-            mensagem: novoStatus ? "Estamos abertos!" : "Estamos em horário de almoço ou fechados. Tente mais tarde."
-        });
+        const novoStatus = btn.innerText.includes("FECHADO");
+        await setDoc(docConfig, { aberto: novoStatus, mensagem: novoStatus ? "Aberto!" : "Fechado." });
     };
 
-    // --- FINANCEIRO (MANTIDO) ---
     window.salvarServico = async (e) => {
         e.preventDefault();
         const prof = document.getElementById('profissionalSelect').value;
         const val = parseFloat(document.getElementById('valorServico').value);
-        
         let d = 0, f = 0;
         if(prof === 'Denver') { d = val * 0.6; f = val * 0.4; } else { f = val; }
 
@@ -279,10 +217,8 @@
         document.getElementById('valorServico').value = '';
     }
 
-    function iniciarFinanceiroTempoReal() {
-        // (Lógica simplificada do financeiro anterior para economizar espaço)
-        const q = query(colVendas, orderBy("data", "asc"));
-        onSnapshot(q, (snap) => {
+    function iniciarFinanceiro() {
+        onSnapshot(query(colVendas, orderBy("data", "asc")), (snap) => {
             let td = 0, tf = 0;
             const tb = document.getElementById('listaHistorico');
             tb.innerHTML = '';
