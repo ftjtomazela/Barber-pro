@@ -15,35 +15,36 @@
             --primary-gold-hover: #b59024;
             --bg-dark: #121212;
             --card-dark: #1E1E1E;
-            --text-light: #E0E0E0;
-            --text-muted: #A0A0A0;
-            --accent-green: #2ecc71;
+            --text-light: #ffffff; /* Texto branco puro para melhor leitura */
+            --text-muted: #cccccc; /* Cinza mais claro para leitura fácil */
         }
 
         body {
             background-color: var(--bg-dark);
             color: var(--text-light);
             font-family: 'Open Sans', sans-serif;
+            font-size: 16px; /* Aumentei a fonte base */
         }
 
         h1, h2, h3, h4, h5, h6, .navbar-brand {
             font-family: 'Montserrat', sans-serif;
             font-weight: 700;
+            color: var(--text-light);
         }
 
-        /* Navbar Estilizada */
+        /* Navbar */
         .navbar {
             background: linear-gradient(180deg, rgba(30,30,30,1) 0%, rgba(18,18,18,0) 100%);
             padding-bottom: 20px;
         }
         .navbar-brand {
             color: var(--primary-gold) !important;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        /* Cards e Inputs */
+        /* Cards e Inputs - Correção de Contraste */
         .card {
             background-color: var(--card-dark);
             border: 1px solid #333;
@@ -51,17 +52,29 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
+        label {
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
         .form-control, .form-select {
-            background-color: #2C2C2C;
+            background-color: #2C2C2C; /* Fundo cinza escuro */
             border: 1px solid #444;
-            color: #fff;
+            color: #ffffff !important; /* TEXTO BRANCO FORÇADO */
+            font-size: 1.1rem; /* Letra maior ao digitar */
             border-radius: 10px;
             padding: 12px;
         }
+        
+        .form-control::placeholder {
+            color: #888; /* Cor do texto de exemplo */
+        }
+
         .form-control:focus, .form-select:focus {
             background-color: #333;
             border-color: var(--primary-gold);
-            color: #fff;
+            color: #ffffff !important;
             box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25);
         }
         
@@ -70,7 +83,8 @@
             background: linear-gradient(45deg, var(--primary-gold), #F4C430);
             border: none;
             color: #000;
-            font-weight: 700;
+            font-weight: 800;
+            font-size: 1.1rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: transform 0.2s;
@@ -82,49 +96,34 @@
         }
 
         /* Abas */
-        .nav-tabs {
-            border-bottom: 1px solid #333;
-        }
-        .nav-link {
-            color: var(--text-muted);
-            border: none;
-            font-weight: 600;
-        }
+        .nav-tabs { border-bottom: 1px solid #333; }
+        .nav-link { color: var(--text-muted); font-weight: 600; }
         .nav-link.active {
             background-color: transparent !important;
             color: var(--primary-gold) !important;
             border-bottom: 3px solid var(--primary-gold) !important;
         }
-        .nav-link:hover {
-            color: var(--primary-gold);
-            border-color: transparent;
-        }
 
         /* Utilitários */
         .hidden { display: none !important; }
         .text-gold { color: var(--primary-gold) !important; }
-        .bg-dark-input { background-color: #2C2C2C; }
-
-        /* Lista Chatbot */
+        
+        /* Lista e Tabela */
         .list-group-item {
             background-color: #252525;
             border-color: #333;
             color: var(--text-light);
-            margin-bottom: 5px;
             border-radius: 10px !important;
+            margin-bottom: 8px;
         }
-        .list-group-item:hover {
-            background-color: #303030;
-        }
-
-        /* Tabela */
+        
         .table { color: var(--text-light); }
         .table-striped>tbody>tr:nth-of-type(odd)>* {
             background-color: #252525;
             color: var(--text-light);
         }
         
-        /* Animação de entrada */
+        /* Animação */
         .fade-in { animation: fadeIn 0.5s ease-in; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -136,8 +135,8 @@
 
 <nav class="navbar navbar-dark">
     <div class="container-fluid d-flex justify-content-between align-items-center">
-        <span class="navbar-brand mb-0"><i class="bi bi-scissors"></i> Barber<span class="text-white">Pro</span></span>
-        <button class="btn btn-outline-secondary btn-sm rounded-pill px-3" onclick="logout()">
+        <span class="navbar-brand mb-0"><i class="bi bi-scissors"></i> Barber<span class="text-white">App</span></span>
+        <button class="btn btn-outline-light btn-sm rounded-pill px-3" onclick="logout()">
             <i class="bi bi-box-arrow-right"></i> Sair
         </button>
     </div>
@@ -148,17 +147,17 @@
         <div class="text-center mb-4">
             <h1 class="text-gold" style="font-size: 3rem;"><i class="bi bi-person-workspace"></i></h1>
             <h4>Bem-vindo</h4>
-            <p class="text-muted">Selecione seu perfil de acesso</p>
+            <p class="text-muted">Acesse o sistema da Barbearia</p>
         </div>
         <div class="mb-4">
-            <label class="form-label text-muted">Quem é você?</label>
+            <label class="form-label">Perfil de Acesso</label>
             <select id="userSelect" class="form-select form-select-lg">
                 <option value="dono">👑 Dono (Administrador)</option>
                 <option value="colaborador">💈 Colaborador (Barbeiro)</option>
             </select>
         </div>
         <button class="btn btn-gold w-100 py-3 rounded-pill" onclick="login()">
-            Acessar Sistema
+            Entrar no Sistema
         </button>
     </div>
 </div>
@@ -178,7 +177,7 @@
         </li>
         <li class="nav-item">
             <button class="nav-link" id="chatbot-tab" data-bs-toggle="tab" data-bs-target="#chatbot" type="button">
-                <i class="bi bi-robot"></i> Bot <span id="chatBadge" class="badge bg-danger rounded-pill ms-1" style="font-size: 0.6rem;">0</span>
+                <i class="bi bi-robot"></i> Bot <span id="chatBadge" class="badge bg-danger rounded-pill ms-1">0</span>
             </button>
         </li>
     </ul>
@@ -187,17 +186,17 @@
         
         <div class="tab-pane fade show active" id="lancar">
             <div class="card p-4">
-                <h5 class="mb-4 border-bottom border-secondary pb-2">Novo Atendimento</h5>
+                <h5 class="mb-4 border-bottom border-secondary pb-2 text-gold">Novo Atendimento</h5>
                 <form onsubmit="salvarServico(event)">
                     <div class="mb-3">
-                        <label class="text-muted small">Nome do Cliente</label>
+                        <label>Nome do Cliente</label>
                         <div class="input-group">
                             <span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-person"></i></span>
-                            <input type="text" id="clienteNome" class="form-control" placeholder="Digite o nome..." required>
+                            <input type="text" id="clienteNome" class="form-control" placeholder="Ex: João da Silva" required>
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="text-muted small">Serviço Realizado</label>
+                        <label>Serviço Realizado</label>
                         <select id="tipoServico" class="form-select">
                             <option value="Corte Degradê">✂️ Corte Degradê</option>
                             <option value="Corte Social">✂️ Corte Social</option>
@@ -208,7 +207,7 @@
                         </select>
                     </div>
                     <div class="mb-4">
-                        <label class="text-muted small">Valor Cobrado (R$)</label>
+                        <label>Valor Cobrado (R$)</label>
                         <div class="input-group">
                             <span class="input-group-text bg-dark border-secondary text-gold">R$</span>
                             <input type="number" id="valorServico" class="form-control" placeholder="0.00" step="0.01" required>
@@ -216,7 +215,7 @@
                     </div>
                     <div class="d-grid">
                         <button type="submit" class="btn btn-gold py-3 rounded-3 shadow">
-                            <i class="bi bi-check-lg"></i> Confirmar Lançamento
+                            <i class="bi bi-check-lg"></i> Confirmar
                         </button>
                     </div>
                 </form>
@@ -240,7 +239,7 @@
             </div>
             
             <div class="card p-3">
-                <h6 class="mb-3 text-muted">Histórico de Hoje</h6>
+                <h6 class="mb-3 text-gold">Histórico Recente</h6>
                 <div class="table-responsive">
                     <table class="table table-dark table-hover table-sm align-middle mb-0">
                         <thead>
@@ -255,161 +254,181 @@
                             </tbody>
                     </table>
                 </div>
-                <div class="mt-3 text-center">
-                   <button class="btn btn-outline-danger btn-sm" onclick="limparDia()">
-                       <i class="bi bi-trash"></i> Fechar Caixa do Dia
-                   </button>
-                </div>
             </div>
         </div>
 
         <div class="tab-pane fade" id="chatbot">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="mb-0">Pedidos Online</h5>
-                <span class="badge bg-secondary">WhatsApp / Bot</span>
+                <h5 class="mb-0 text-gold">Pedidos Online</h5>
+                <span class="badge bg-secondary">WhatsApp</span>
             </div>
             
             <div id="chatbotList" class="list-group">
                 </div>
             <div class="text-center mt-3">
-                <small class="text-muted">Integração ativa aguardando Webhook...</small>
+                <small class="text-muted">Conectado ao Firebase.</small>
             </div>
         </div>
 
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    // --- Lógica do Sistema (Mesma Lógica, Novo Visual) ---
+<script type="module">
+    // Importando Firebase (Versão 10.8.0 Estável)
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, Timestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    function login() {
-        const userType = document.getElementById('userSelect').value;
-        localStorage.setItem('barberUser', userType);
-        
-        // Efeito visual de troca
-        const loginScreen = document.getElementById('loginScreen');
-        loginScreen.style.opacity = '0';
-        setTimeout(() => {
-            loginScreen.classList.add('hidden');
-            const mainPanel = document.getElementById('mainPanel');
-            mainPanel.classList.remove('hidden');
-            atualizarRelatorio();
-            carregarChatbotMock();
-        }, 300);
+    // --- SUA CONFIGURAÇÃO DO FIREBASE (JÁ INSERIDA) ---
+    const firebaseConfig = {
+        apiKey: "AIzaSyDcIDq8AEmL48Z9IFy7-fzBTY6yiFTzTL4",
+        authDomain: "appbarber-cf462.firebaseapp.com",
+        projectId: "appbarber-cf462",
+        storageBucket: "appbarber-cf462.firebasestorage.app",
+        messagingSenderId: "252056091488",
+        appId: "1:252056091488:web:8a483735cf8186ce24bc05",
+        measurementId: "G-8L2WJPVW6G"
+    };
+
+    // Inicializa o Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const colecaoVendas = collection(db, "lancamentos");
+
+    // --- UI e Navegação ---
+    let userType = localStorage.getItem('barberUser');
+    
+    if (userType) {
+        mostrarPainel();
     }
 
-    function logout() {
+    // Tornar funções acessíveis globalmente
+    window.login = function() {
+        const type = document.getElementById('userSelect').value;
+        localStorage.setItem('barberUser', type);
+        userType = type;
+        mostrarPainel();
+    }
+
+    window.logout = function() {
         localStorage.removeItem('barberUser');
         location.reload();
     }
 
-    function salvarServico(e) {
+    function mostrarPainel() {
+        const loginScreen = document.getElementById('loginScreen');
+        loginScreen.style.opacity = '0';
+        setTimeout(() => {
+            loginScreen.classList.add('hidden');
+            document.getElementById('mainPanel').classList.remove('hidden');
+            iniciarEscutaEmTempoReal();
+            carregarChatbotMock();
+        }, 300);
+    }
+
+    // --- Lógica: SALVAR NO FIREBASE ---
+    window.salvarServico = async function(e) {
         e.preventDefault();
         
         const cliente = document.getElementById('clienteNome').value;
         const servico = document.getElementById('tipoServico').value;
         const valorTotal = parseFloat(document.getElementById('valorServico').value);
 
+        if(!cliente || !valorTotal) return alert("Preencha todos os campos!");
+
         const parteColaborador = valorTotal * 0.60;
         const parteCasa = valorTotal * 0.40;
 
-        const registro = {
-            id: Date.now(),
-            cliente,
-            servico,
-            total: valorTotal,
-            colab: parteColaborador,
-            casa: parteCasa,
-            data: new Date().toLocaleTimeString()
-        };
+        try {
+            await addDoc(colecaoVendas, {
+                cliente: cliente,
+                servico: servico,
+                total: valorTotal,
+                colab: parteColaborador,
+                casa: parteCasa,
+                data: Timestamp.now()
+            });
 
-        let dados = JSON.parse(localStorage.getItem('barberDados')) || [];
-        dados.push(registro);
-        localStorage.setItem('barberDados', JSON.stringify(dados));
+            alert(`✅ Lançado! Colab: R$${parteColaborador.toFixed(2)} | Casa: R$${parteCasa.toFixed(2)}`);
+            
+            document.getElementById('clienteNome').value = '';
+            document.getElementById('valorServico').value = '';
+            document.getElementById('clienteNome').focus();
 
-        // Feedback visual mais bonito que alert
-        alert(`✅ Sucesso!\nColaborador: R$ ${parteColaborador.toFixed(2)}\nBarbearia: R$ ${parteCasa.toFixed(2)}`);
-        
-        document.getElementById('clienteNome').value = '';
-        document.getElementById('valorServico').value = '';
-        atualizarRelatorio();
-    }
-
-    function atualizarRelatorio() {
-        let dados = JSON.parse(localStorage.getItem('barberDados')) || [];
-        
-        let totalC = 0;
-        let totalH = 0;
-        const tbody = document.getElementById('listaHistorico');
-        tbody.innerHTML = '';
-
-        // Mostra os últimos primeiro (reverse)
-        dados.slice().reverse().forEach(item => {
-            totalC += item.colab;
-            totalH += item.casa;
-
-            // Formata nome serviço curto para caber no mobile
-            let servicoCurto = item.servico.split(' ')[0] + '...';
-
-            let row = `<tr>
-                <td class="fw-bold text-white">${item.cliente}</td>
-                <td class="text-muted">${servicoCurto}</td>
-                <td>R$${item.total.toFixed(0)}</td>
-                <td class="text-success fw-bold">R$${item.colab.toFixed(2)}</td>
-            </tr>`;
-            tbody.innerHTML += row;
-        });
-
-        document.getElementById('totalColab').innerText = totalC.toFixed(2);
-        document.getElementById('totalCasa').innerText = totalH.toFixed(2);
-    }
-
-    function limparDia() {
-        if(confirm("Tem certeza que deseja zerar o caixa de hoje?")) {
-            localStorage.removeItem('barberDados');
-            atualizarRelatorio();
+        } catch (error) {
+            console.error("Erro:", error);
+            alert("Erro ao salvar. Verifique sua conexão.");
         }
     }
 
-    function carregarChatbotMock() {
+    // --- Lógica: LER EM TEMPO REAL ---
+    function iniciarEscutaEmTempoReal() {
+        const q = query(colecaoVendas, orderBy("data", "asc"));
+
+        onSnapshot(q, (snapshot) => {
+            let totalC = 0;
+            let totalH = 0;
+            const tbody = document.getElementById('listaHistorico');
+            tbody.innerHTML = '';
+
+            const vendas = [];
+            snapshot.forEach((doc) => {
+                vendas.push({ id: doc.id, ...doc.data() });
+            });
+
+            // Mostra do mais novo pro mais antigo
+            vendas.reverse().forEach(item => {
+                totalC += item.colab;
+                totalH += item.casa;
+
+                let servicoCurto = item.servico.split(' ')[0] + '...';
+
+                let row = `<tr>
+                    <td class="fw-bold text-white">${item.cliente}</td>
+                    <td class="text-muted">${servicoCurto}</td>
+                    <td>R$${item.total.toFixed(0)}</td>
+                    <td class="text-success fw-bold">R$${item.colab.toFixed(2)}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+
+            document.getElementById('totalColab').innerText = totalC.toFixed(2);
+            document.getElementById('totalCasa').innerText = totalH.toFixed(2);
+        });
+    }
+
+    // --- Mock Chatbot ---
+    window.carregarChatbotMock = function() {
         const pedidosMock = [
             { cliente: "Carlos (Zap)", servico: "Barba + Corte", hora: "14:30" },
-            { cliente: "Ana (Zap)", servico: "Sobrancelha", hora: "15:00" },
-            { cliente: "Pedro (Site)", servico: "Corte Social", hora: "16:00" }
+            { cliente: "Ana (Zap)", servico: "Sobrancelha", hora: "15:00" }
         ];
-
         const lista = document.getElementById('chatbotList');
         const badge = document.getElementById('chatBadge');
-        lista.innerHTML = '';
-        
-        pedidosMock.forEach(p => {
-            lista.innerHTML += `
-                <div class="list-group-item d-flex justify-content-between align-items-center p-3">
-                    <div>
-                        <h6 class="mb-0 text-white">${p.cliente}</h6>
-                        <small class="text-muted"><i class="bi bi-clock"></i> ${p.hora} • ${p.servico}</small>
-                    </div>
-                    <button class="btn btn-sm btn-outline-success rounded-pill px-3" onclick="importarPedido('${p.cliente}', '${p.servico}')">
-                        <i class="bi bi-arrow-up-short"></i> Lançar
-                    </button>
-                </div>
-            `;
-        });
-        badge.innerText = pedidosMock.length;
+        if(lista) {
+            lista.innerHTML = '';
+            pedidosMock.forEach(p => {
+                lista.innerHTML += `
+                    <div class="list-group-item d-flex justify-content-between align-items-center p-3">
+                        <div>
+                            <h6 class="mb-0 text-white">${p.cliente}</h6>
+                            <small class="text-muted"><i class="bi bi-clock"></i> ${p.hora} • ${p.servico}</small>
+                        </div>
+                        <button class="btn btn-sm btn-outline-success rounded-pill px-3" onclick="importarPedido('${p.cliente}', '${p.servico}')">
+                            Lançar
+                        </button>
+                    </div>`;
+            });
+            badge.innerText = pedidosMock.length;
+        }
     }
 
-    function importarPedido(nome, servico) {
+    window.importarPedido = function(nome, servico) {
         document.getElementById('clienteNome').value = nome;
-        document.getElementById('lancar-tab').click(); 
+        // Muda para a aba de lançar
+        const triggerEl = document.querySelector('#lancar-tab')
+        const tab = new bootstrap.Tab(triggerEl)
+        tab.show()
         document.getElementById('valorServico').focus();
-    }
-
-    if(localStorage.getItem('barberUser')) {
-        document.getElementById('loginScreen').classList.add('hidden');
-        document.getElementById('mainPanel').classList.remove('hidden');
-        atualizarRelatorio();
-        carregarChatbotMock();
     }
 </script>
 
