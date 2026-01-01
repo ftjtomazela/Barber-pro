@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BarberApp Premium</title>
+    <title>BarberApp - Fernando & Denver</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
@@ -25,11 +25,11 @@
             font-size: 16px;
         }
 
-        /* Navbar Fixa no Topo */
+        /* Navbar */
         .navbar {
             background: #1E1E1E;
             box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-            padding: 10px 0;
+            padding: 15px 0;
             z-index: 1000;
         }
         .navbar-brand {
@@ -39,7 +39,6 @@
             text-transform: uppercase;
         }
 
-        /* Ajuste para o conteúdo não ficar atrás da navbar */
         .main-container {
             margin-top: 20px;
             padding-bottom: 80px;
@@ -52,7 +51,7 @@
             border-radius: 12px;
         }
 
-        label { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 5px; }
+        label { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 5px; font-weight: 600; }
 
         .form-control, .form-select {
             background-color: #2C2C2C;
@@ -79,7 +78,7 @@
         }
         .btn-gold:hover { background: #b59024; color: #000; }
 
-        /* Abas Estilizadas */
+        /* Abas */
         .nav-tabs { border-bottom: 1px solid #333; margin-bottom: 20px; }
         .nav-link { 
             color: var(--text-muted); 
@@ -92,23 +91,23 @@
             color: var(--primary-gold) !important;
             border-bottom: 3px solid var(--primary-gold) !important;
         }
-        .nav-link:hover { color: var(--primary-gold); }
+
+        /* Badges de Profissional */
+        .badge-fernando { background-color: var(--primary-gold); color: #000; }
+        .badge-denver { background-color: #28a745; color: #fff; }
 
         /* Utilitários */
         .hidden { display: none !important; }
         .text-gold { color: var(--primary-gold) !important; }
-        
-        /* Lista e Tabela */
-        .list-group-item {
-            background-color: #252525;
-            border: 1px solid #333;
-            color: var(--text-light);
-            margin-bottom: 8px;
-            border-radius: 8px !important;
-        }
-        
         .table { --bs-table-color: var(--text-muted); }
         .table-dark { --bs-table-bg: #252525; }
+        
+        /* Animação */
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
@@ -126,24 +125,22 @@
 
     <div id="loginScreen" class="card p-4 mx-auto mt-5" style="max-width: 400px;">
         <div class="text-center mb-4">
-            <h1 class="text-gold"><i class="bi bi-person-lock"></i></h1>
+            <h1 class="text-gold"><i class="bi bi-shield-lock"></i></h1>
             <h4>Acesso Restrito</h4>
-            <p class="text-muted small">Use seu email e senha cadastrados</p>
+            <p class="text-muted small">Login do sistema</p>
         </div>
         
         <form onsubmit="fazerLogin(event)">
             <div class="mb-3">
                 <label>Email</label>
-                <input type="email" id="emailLogin" class="form-control" placeholder="ex: dono@barber.com" required>
+                <input type="email" id="emailLogin" class="form-control" placeholder="admin@barber.com" required>
             </div>
             <div class="mb-4">
                 <label>Senha</label>
                 <input type="password" id="senhaLogin" class="form-control" placeholder="******" required>
             </div>
             <div class="d-grid">
-                <button type="submit" class="btn btn-gold py-3 rounded-pill shadow">
-                    Entrar
-                </button>
+                <button type="submit" class="btn btn-gold py-3 rounded-pill shadow">Entrar</button>
             </div>
             <div id="loginError" class="text-danger text-center mt-3 small hidden"></div>
         </form>
@@ -159,12 +156,12 @@
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="relatorio-tab" data-bs-toggle="tab" data-bs-target="#relatorio" type="button" role="tab">
-                    <i class="bi bi-graph-up"></i> Relatório
+                    <i class="bi bi-graph-up"></i> Caixas
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="chatbot-tab" data-bs-toggle="tab" data-bs-target="#chatbot" type="button" role="tab">
-                    <i class="bi bi-whatsapp"></i> Pedidos <span id="chatBadge" class="badge bg-danger rounded-pill ms-1">0</span>
+                    <i class="bi bi-whatsapp"></i> Bot <span id="chatBadge" class="badge bg-danger rounded-pill ms-1">0</span>
                 </button>
             </li>
         </ul>
@@ -173,20 +170,29 @@
             
             <div class="tab-pane fade show active" id="lancar" role="tabpanel">
                 <div class="card p-4">
-                    <h5 class="mb-4 text-gold border-bottom border-secondary pb-2">Novo Corte / Serviço</h5>
+                    <h5 class="mb-3 text-gold border-bottom border-secondary pb-2">Novo Atendimento</h5>
                     <form onsubmit="salvarServico(event)">
+                        
                         <div class="mb-3">
-                            <label>Nome do Cliente</label>
-                            <input type="text" id="clienteNome" class="form-control" placeholder="Digite o nome..." required>
+                            <label class="text-warning">Quem cortou?</label>
+                            <select id="profissionalSelect" class="form-select form-select-lg" style="border: 2px solid #555;">
+                                <option value="Fernando">👑 Fernando (Dono)</option>
+                                <option value="Denver">✂️ Denver (Colaborador)</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Cliente</label>
+                            <input type="text" id="clienteNome" class="form-control" placeholder="Nome do cliente..." required>
                         </div>
                         <div class="mb-3">
                             <label>Serviço</label>
                             <select id="tipoServico" class="form-select">
-                                <option value="Corte Degradê">✂️ Corte Degradê</option>
-                                <option value="Corte Social">✂️ Corte Social</option>
-                                <option value="Barba">🪒 Barba</option>
-                                <option value="Corte + Barba">⭐ Corte + Barba</option>
-                                <option value="Sobrancelha">📐 Sobrancelha</option>
+                                <option value="Corte Degradê">Corte Degradê</option>
+                                <option value="Corte Social">Corte Social</option>
+                                <option value="Barba">Barba</option>
+                                <option value="Corte + Barba">Corte + Barba</option>
+                                <option value="Sobrancelha">Sobrancelha</option>
                             </select>
                         </div>
                         <div class="mb-4">
@@ -194,36 +200,39 @@
                             <input type="number" id="valorServico" class="form-control" placeholder="0.00" step="0.01" required>
                         </div>
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-gold py-3 rounded-pill">Confirmar Lançamento</button>
+                            <button type="submit" class="btn btn-gold py-3 rounded-pill">Salvar Lançamento</button>
                         </div>
                     </form>
                 </div>
             </div>
 
             <div class="tab-pane fade" id="relatorio" role="tabpanel">
+                
                 <div class="row g-2 mb-3">
                     <div class="col-6">
-                        <div class="card p-3 text-center bg-dark border-secondary h-100">
-                            <small class="text-muted fw-bold">Colaborador (60%)</small>
-                            <h3 class="text-success mt-2">R$ <span id="totalColab">0.00</span></h3>
+                        <div class="card p-3 text-center bg-dark border-success h-100">
+                            <small class="text-success fw-bold">SALDO DENVER</small>
+                            <div class="small text-muted mb-1">(60% Comissões)</div>
+                            <h3 class="text-white">R$ <span id="saldoDenver">0.00</span></h3>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="card p-3 text-center bg-dark border-secondary h-100">
-                            <small class="text-muted fw-bold">Casa (40%)</small>
-                            <h3 class="text-gold mt-2">R$ <span id="totalCasa">0.00</span></h3>
+                        <div class="card p-3 text-center bg-dark border-warning h-100">
+                            <small class="text-gold fw-bold">SALDO FERNANDO</small>
+                            <div class="small text-muted mb-1">(Cortes Próprios + 40%)</div>
+                            <h3 class="text-white">R$ <span id="saldoFernando">0.00</span></h3>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="card p-3">
-                    <h6 class="text-white mb-3">Histórico do Dia</h6>
+                    <h6 class="text-white mb-3">Histórico de Hoje</h6>
                     <div class="table-responsive">
                         <table class="table table-dark table-striped table-sm align-middle mb-0">
                             <thead>
-                                <tr class="text-muted">
+                                <tr class="text-muted small">
+                                    <th>Profis.</th>
                                     <th>Cli.</th>
-                                    <th>Serv.</th>
                                     <th>Valor</th>
                                 </tr>
                             </thead>
@@ -236,25 +245,25 @@
 
             <div class="tab-pane fade" id="chatbot" role="tabpanel">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="text-white mb-0">Fila de Espera</h5>
-                    <span class="badge bg-success"><i class="bi bi-whatsapp"></i> Online</span>
+                    <h5 class="text-white mb-0">Fila WhatsApp</h5>
+                    <span class="badge bg-success">Online</span>
                 </div>
                 <div id="chatbotList" class="list-group">
                     </div>
-                <p class="text-center text-muted mt-3 small">Aguardando novos pedidos...</p>
             </div>
 
-        </div> </div> </div>
+        </div> 
+    </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script type="module">
-    // Importações do Firebase
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, Timestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    // --- CONFIGURAÇÃO (Já com suas chaves) ---
+    // --- CONFIGURAÇÃO FIREBASE ---
     const firebaseConfig = {
         apiKey: "AIzaSyDcIDq8AEmL48Z9IFy7-fzBTY6yiFTzTL4",
         authDomain: "appbarber-cf462.firebaseapp.com",
@@ -265,31 +274,26 @@
         measurementId: "G-8L2WJPVW6G"
     };
 
-    // Inicializa Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
     const colecaoVendas = collection(db, "lancamentos");
 
-    // --- Monitorar Estado do Login (Entra sozinho se já logou antes) ---
+    // Login State
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            // Usuário está logado
-            console.log("Logado como:", user.email);
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('mainPanel').classList.remove('hidden');
             document.getElementById('btnSair').classList.remove('hidden');
             iniciarEscutaEmTempoReal();
             carregarChatbotMock();
         } else {
-            // Usuário não está logado
             document.getElementById('loginScreen').classList.remove('hidden');
             document.getElementById('mainPanel').classList.add('hidden');
             document.getElementById('btnSair').classList.add('hidden');
         }
     });
 
-    // --- Função de Login (Conectada ao Form) ---
     window.fazerLogin = function(e) {
         e.preventDefault();
         const email = document.getElementById('emailLogin').value;
@@ -297,56 +301,56 @@
         const errorMsg = document.getElementById('loginError');
 
         errorMsg.classList.add('hidden');
-        
         signInWithEmailAndPassword(auth, email, pass)
-            .then((userCredential) => {
-                // Sucesso! O onAuthStateChanged vai cuidar de mudar a tela
-            })
             .catch((error) => {
-                console.error(error);
-                errorMsg.innerText = "Erro: Email ou senha incorretos.";
+                errorMsg.innerText = "Erro: " + error.message;
                 errorMsg.classList.remove('hidden');
             });
     }
 
-    // --- Função de Logout ---
     window.logout = function() {
-        signOut(auth).then(() => {
-            // O onAuthStateChanged vai jogar pra tela de login
-            location.reload(); 
-        }).catch((error) => {
-            console.error(error);
-        });
+        signOut(auth).then(() => location.reload());
     }
 
-    // --- Salvar Venda no Banco ---
+    // --- SALVAR COM REGRA DE COMISSÃO ---
     window.salvarServico = async function(e) {
         e.preventDefault();
         
+        const profissional = document.getElementById('profissionalSelect').value; // Fernando ou Denver
         const cliente = document.getElementById('clienteNome').value;
         const servico = document.getElementById('tipoServico').value;
         const valorTotal = parseFloat(document.getElementById('valorServico').value);
 
         if(!cliente || !valorTotal) return;
 
-        const parteColaborador = valorTotal * 0.60;
-        const parteCasa = valorTotal * 0.40;
+        let ganhoDenver = 0;
+        let ganhoFernando = 0;
+
+        // REGRA DE NEGÓCIO
+        if (profissional === "Denver") {
+            // Se Denver cortou: 60% dele, 40% Fernando
+            ganhoDenver = valorTotal * 0.60;
+            ganhoFernando = valorTotal * 0.40;
+        } else {
+            // Se Fernando cortou: 100% Fernando (Dono)
+            ganhoDenver = 0;
+            ganhoFernando = valorTotal;
+        }
 
         try {
             await addDoc(colecaoVendas, {
+                profissional: profissional,
                 cliente: cliente,
                 servico: servico,
                 total: valorTotal,
-                colab: parteColaborador,
-                casa: parteCasa,
-                user_email: auth.currentUser.email, // Salva quem fez o corte
+                ganho_denver: ganhoDenver,
+                ganho_fernando: ganhoFernando,
                 data: Timestamp.now()
             });
-            alert("✅ Lançado com sucesso!");
+            
+            alert(`✅ Lançado para ${profissional}!`);
             document.getElementById('clienteNome').value = '';
             document.getElementById('valorServico').value = '';
-            
-            // Foca de novo no primeiro campo
             document.getElementById('clienteNome').focus();
 
         } catch (error) {
@@ -354,73 +358,67 @@
         }
     }
 
-    // --- Atualizar Relatório em Tempo Real ---
+    // --- RELATÓRIO INTELIGENTE ---
     function iniciarEscutaEmTempoReal() {
         const q = query(colecaoVendas, orderBy("data", "asc"));
 
         onSnapshot(q, (snapshot) => {
-            let totalC = 0;
-            let totalH = 0;
+            let saldoD = 0;
+            let saldoF = 0;
             const tbody = document.getElementById('listaHistorico');
             tbody.innerHTML = '';
 
             const vendas = [];
-            snapshot.forEach((doc) => {
-                vendas.push({ id: doc.id, ...doc.data() });
-            });
+            snapshot.forEach((doc) => vendas.push({ id: doc.id, ...doc.data() }));
 
-            // Mostra os mais recentes no topo
             vendas.reverse().forEach(item => {
-                totalC += item.colab;
-                totalH += item.casa;
+                // Soma os ganhos individuais salvos no banco
+                saldoD += item.ganho_denver || 0;
+                saldoF += item.ganho_fernando || 0;
+
+                // Define cor do badge
+                let badgeClass = item.profissional === 'Fernando' ? 'badge-fernando' : 'badge-denver';
+                let nomeProf = item.profissional === 'Fernando' ? 'FER' : 'DEN';
 
                 let row = `<tr>
-                    <td class="text-white">${item.cliente}</td>
-                    <td class="text-muted small">${item.servico}</td>
+                    <td><span class="badge ${badgeClass}">${nomeProf}</span></td>
+                    <td class="text-white small">${item.cliente}<br><span class="text-muted" style="font-size:0.75rem">${item.servico}</span></td>
                     <td class="text-gold">R$${item.total.toFixed(0)}</td>
                 </tr>`;
                 tbody.innerHTML += row;
             });
 
-            document.getElementById('totalColab').innerText = totalC.toFixed(2);
-            document.getElementById('totalCasa').innerText = totalH.toFixed(2);
+            document.getElementById('saldoDenver').innerText = saldoD.toFixed(2);
+            document.getElementById('saldoFernando').innerText = saldoF.toFixed(2);
         });
     }
 
-    // --- Mock Chatbot (Exemplo) ---
+    // --- MOCK CHATBOT ---
     window.carregarChatbotMock = function() {
         const pedidos = [
-            { cliente: "Carlos (Zap)", servico: "Barba + Corte", hora: "14:30" },
-            { cliente: "Ana (Bot)", servico: "Sobrancelha", hora: "15:00" }
+            { cliente: "Carlos", servico: "Corte", hora: "14:30" },
+            { cliente: "Pedro", servico: "Barba", hora: "15:00" }
         ];
         const lista = document.getElementById('chatbotList');
         const badge = document.getElementById('chatBadge');
-        
         if(lista) {
             lista.innerHTML = '';
             pedidos.forEach(p => {
                 lista.innerHTML += `
                     <div class="list-group-item d-flex justify-content-between align-items-center p-3">
-                        <div>
-                            <div class="fw-bold text-white">${p.cliente}</div>
-                            <div class="small text-muted">${p.servico} - ${p.hora}</div>
-                        </div>
-                        <button class="btn btn-sm btn-outline-success rounded-pill" onclick="importarPedido('${p.cliente}', '${p.servico}')">
-                            Lançar
-                        </button>
+                        <div><div class="fw-bold text-white">${p.cliente}</div><div class="small text-muted">${p.servico}</div></div>
+                        <button class="btn btn-sm btn-outline-success" onclick="importarPedido('${p.cliente}')">Lançar</button>
                     </div>`;
             });
             badge.innerText = pedidos.length;
         }
     }
 
-    window.importarPedido = function(nome, servico) {
+    window.importarPedido = function(nome) {
         document.getElementById('clienteNome').value = nome;
-        // Ativa a aba de lançar via JS do Bootstrap 5
         const triggerEl = document.querySelector('#lancar-tab');
         const tab = new bootstrap.Tab(triggerEl);
         tab.show();
-        document.getElementById('valorServico').focus();
     }
 </script>
 
