@@ -12,97 +12,87 @@
     <style>
         :root {
             --primary-gold: #D4AF37;
-            --primary-gold-hover: #b59024;
             --bg-dark: #121212;
             --card-dark: #1E1E1E;
-            --text-light: #ffffff; /* Texto branco puro para melhor leitura */
-            --text-muted: #cccccc; /* Cinza mais claro para leitura fácil */
+            --text-light: #ffffff;
+            --text-muted: #cccccc;
         }
 
         body {
             background-color: var(--bg-dark);
             color: var(--text-light);
             font-family: 'Open Sans', sans-serif;
-            font-size: 16px; /* Aumentei a fonte base */
+            font-size: 16px;
         }
 
-        h1, h2, h3, h4, h5, h6, .navbar-brand {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            color: var(--text-light);
-        }
-
-        /* Navbar */
+        /* Navbar Fixa no Topo */
         .navbar {
-            background: linear-gradient(180deg, rgba(30,30,30,1) 0%, rgba(18,18,18,0) 100%);
-            padding-bottom: 20px;
+            background: #1E1E1E;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            padding: 10px 0;
+            z-index: 1000;
         }
         .navbar-brand {
             color: var(--primary-gold) !important;
-            font-size: 1.6rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
-        /* Cards e Inputs - Correção de Contraste */
+        /* Ajuste para o conteúdo não ficar atrás da navbar */
+        .main-container {
+            margin-top: 20px;
+            padding-bottom: 80px;
+        }
+
+        /* Cards e Inputs */
         .card {
             background-color: var(--card-dark);
             border: 1px solid #333;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            border-radius: 12px;
         }
 
-        label {
-            color: var(--text-muted);
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
+        label { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 5px; }
 
         .form-control, .form-select {
-            background-color: #2C2C2C; /* Fundo cinza escuro */
+            background-color: #2C2C2C;
             border: 1px solid #444;
-            color: #ffffff !important; /* TEXTO BRANCO FORÇADO */
-            font-size: 1.1rem; /* Letra maior ao digitar */
-            border-radius: 10px;
+            color: #fff !important;
+            font-size: 1rem;
+            border-radius: 8px;
             padding: 12px;
         }
-        
-        .form-control::placeholder {
-            color: #888; /* Cor do texto de exemplo */
-        }
-
         .form-control:focus, .form-select:focus {
             background-color: #333;
             border-color: var(--primary-gold);
-            color: #ffffff !important;
-            box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25);
-        }
-        
-        /* Botões */
-        .btn-gold {
-            background: linear-gradient(45deg, var(--primary-gold), #F4C430);
-            border: none;
-            color: #000;
-            font-weight: 800;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: transform 0.2s;
-        }
-        .btn-gold:hover {
-            background: #b59024;
-            transform: scale(1.02);
-            color: #000;
+            color: #fff !important;
+            box-shadow: none;
         }
 
-        /* Abas */
-        .nav-tabs { border-bottom: 1px solid #333; }
-        .nav-link { color: var(--text-muted); font-weight: 600; }
+        /* Botões */
+        .btn-gold {
+            background: var(--primary-gold);
+            border: none;
+            color: #000;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .btn-gold:hover { background: #b59024; color: #000; }
+
+        /* Abas Estilizadas */
+        .nav-tabs { border-bottom: 1px solid #333; margin-bottom: 20px; }
+        .nav-link { 
+            color: var(--text-muted); 
+            border: none; 
+            font-weight: 600; 
+            padding: 12px;
+        }
         .nav-link.active {
             background-color: transparent !important;
             color: var(--primary-gold) !important;
             border-bottom: 3px solid var(--primary-gold) !important;
         }
+        .nav-link:hover { color: var(--primary-gold); }
 
         /* Utilitários */
         .hidden { display: none !important; }
@@ -111,174 +101,160 @@
         /* Lista e Tabela */
         .list-group-item {
             background-color: #252525;
-            border-color: #333;
+            border: 1px solid #333;
             color: var(--text-light);
-            border-radius: 10px !important;
             margin-bottom: 8px;
+            border-radius: 8px !important;
         }
         
-        .table { color: var(--text-light); }
-        .table-striped>tbody>tr:nth-of-type(odd)>* {
-            background-color: #252525;
-            color: var(--text-light);
-        }
-        
-        /* Animação */
-        .fade-in { animation: fadeIn 0.5s ease-in; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .table { --bs-table-color: var(--text-muted); }
+        .table-dark { --bs-table-bg: #252525; }
     </style>
 </head>
 <body>
 
-<nav class="navbar navbar-dark">
-    <div class="container-fluid d-flex justify-content-between align-items-center">
+<nav class="navbar navbar-dark sticky-top">
+    <div class="container d-flex justify-content-between align-items-center">
         <span class="navbar-brand mb-0"><i class="bi bi-scissors"></i> Barber<span class="text-white">App</span></span>
-        <button class="btn btn-outline-light btn-sm rounded-pill px-3" onclick="logout()">
+        <button id="btnSair" class="btn btn-outline-light btn-sm rounded-pill px-3 hidden" onclick="logout()">
             <i class="bi bi-box-arrow-right"></i> Sair
         </button>
     </div>
 </nav>
 
-<div id="loginScreen" class="container mt-5 fade-in">
-    <div class="card p-4 mx-auto" style="max-width: 400px;">
+<div class="container main-container">
+
+    <div id="loginScreen" class="card p-4 mx-auto mt-5" style="max-width: 400px;">
         <div class="text-center mb-4">
-            <h1 class="text-gold" style="font-size: 3rem;"><i class="bi bi-person-workspace"></i></h1>
-            <h4>Bem-vindo</h4>
-            <p class="text-muted">Acesse o sistema da Barbearia</p>
+            <h1 class="text-gold"><i class="bi bi-person-lock"></i></h1>
+            <h4>Acesso Restrito</h4>
+            <p class="text-muted small">Use seu email e senha cadastrados</p>
         </div>
-        <div class="mb-4">
-            <label class="form-label">Perfil de Acesso</label>
-            <select id="userSelect" class="form-select form-select-lg">
-                <option value="dono">👑 Dono (Administrador)</option>
-                <option value="colaborador">💈 Colaborador (Barbeiro)</option>
-            </select>
-        </div>
-        <button class="btn btn-gold w-100 py-3 rounded-pill" onclick="login()">
-            Entrar no Sistema
-        </button>
-    </div>
-</div>
-
-<div id="mainPanel" class="container mt-2 hidden fade-in">
-    
-    <ul class="nav nav-tabs nav-fill mb-4" id="myTab" role="tablist">
-        <li class="nav-item">
-            <button class="nav-link active" id="lancar-tab" data-bs-toggle="tab" data-bs-target="#lancar" type="button">
-                <i class="bi bi-plus-circle"></i> Lançar
-            </button>
-        </li>
-        <li class="nav-item">
-            <button class="nav-link" id="relatorio-tab" data-bs-toggle="tab" data-bs-target="#relatorio" type="button">
-                <i class="bi bi-graph-up"></i> Relatório
-            </button>
-        </li>
-        <li class="nav-item">
-            <button class="nav-link" id="chatbot-tab" data-bs-toggle="tab" data-bs-target="#chatbot" type="button">
-                <i class="bi bi-robot"></i> Bot <span id="chatBadge" class="badge bg-danger rounded-pill ms-1">0</span>
-            </button>
-        </li>
-    </ul>
-
-    <div class="tab-content">
         
-        <div class="tab-pane fade show active" id="lancar">
-            <div class="card p-4">
-                <h5 class="mb-4 border-bottom border-secondary pb-2 text-gold">Novo Atendimento</h5>
-                <form onsubmit="salvarServico(event)">
-                    <div class="mb-3">
-                        <label>Nome do Cliente</label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-person"></i></span>
-                            <input type="text" id="clienteNome" class="form-control" placeholder="Ex: João da Silva" required>
+        <form onsubmit="fazerLogin(event)">
+            <div class="mb-3">
+                <label>Email</label>
+                <input type="email" id="emailLogin" class="form-control" placeholder="ex: dono@barber.com" required>
+            </div>
+            <div class="mb-4">
+                <label>Senha</label>
+                <input type="password" id="senhaLogin" class="form-control" placeholder="******" required>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-gold py-3 rounded-pill shadow">
+                    Entrar
+                </button>
+            </div>
+            <div id="loginError" class="text-danger text-center mt-3 small hidden"></div>
+        </form>
+    </div>
+
+    <div id="mainPanel" class="hidden fade-in">
+        
+        <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="lancar-tab" data-bs-toggle="tab" data-bs-target="#lancar" type="button" role="tab">
+                    <i class="bi bi-plus-circle"></i> Lançar
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="relatorio-tab" data-bs-toggle="tab" data-bs-target="#relatorio" type="button" role="tab">
+                    <i class="bi bi-graph-up"></i> Relatório
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="chatbot-tab" data-bs-toggle="tab" data-bs-target="#chatbot" type="button" role="tab">
+                    <i class="bi bi-whatsapp"></i> Pedidos <span id="chatBadge" class="badge bg-danger rounded-pill ms-1">0</span>
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+            
+            <div class="tab-pane fade show active" id="lancar" role="tabpanel">
+                <div class="card p-4">
+                    <h5 class="mb-4 text-gold border-bottom border-secondary pb-2">Novo Corte / Serviço</h5>
+                    <form onsubmit="salvarServico(event)">
+                        <div class="mb-3">
+                            <label>Nome do Cliente</label>
+                            <input type="text" id="clienteNome" class="form-control" placeholder="Digite o nome..." required>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label>Serviço Realizado</label>
-                        <select id="tipoServico" class="form-select">
-                            <option value="Corte Degradê">✂️ Corte Degradê</option>
-                            <option value="Corte Social">✂️ Corte Social</option>
-                            <option value="Barba">🪒 Barba (Toalha Quente)</option>
-                            <option value="Aparar Barba">🪒 Aparar Barba</option>
-                            <option value="Sobrancelha">📐 Sobrancelha</option>
-                            <option value="Combo Completo">⭐ Combo Completo</option>
-                        </select>
-                    </div>
-                    <div class="mb-4">
-                        <label>Valor Cobrado (R$)</label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-dark border-secondary text-gold">R$</span>
+                        <div class="mb-3">
+                            <label>Serviço</label>
+                            <select id="tipoServico" class="form-select">
+                                <option value="Corte Degradê">✂️ Corte Degradê</option>
+                                <option value="Corte Social">✂️ Corte Social</option>
+                                <option value="Barba">🪒 Barba</option>
+                                <option value="Corte + Barba">⭐ Corte + Barba</option>
+                                <option value="Sobrancelha">📐 Sobrancelha</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label>Valor (R$)</label>
                             <input type="number" id="valorServico" class="form-control" placeholder="0.00" step="0.01" required>
                         </div>
-                    </div>
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-gold py-3 rounded-3 shadow">
-                            <i class="bi bi-check-lg"></i> Confirmar
-                        </button>
-                    </div>
-                </form>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-gold py-3 rounded-pill">Confirmar Lançamento</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
 
-        <div class="tab-pane fade" id="relatorio">
-            <div class="row g-3 mb-4">
-                <div class="col-6">
-                    <div class="card p-3 h-100 text-center border-0" style="background: linear-gradient(145deg, #1e1e1e, #252525);">
-                        <small class="text-muted text-uppercase fw-bold" style="font-size: 0.7rem;">Colaborador (60%)</small>
-                        <h3 class="text-success mt-2 fw-bold">R$ <span id="totalColab">0.00</span></h3>
+            <div class="tab-pane fade" id="relatorio" role="tabpanel">
+                <div class="row g-2 mb-3">
+                    <div class="col-6">
+                        <div class="card p-3 text-center bg-dark border-secondary h-100">
+                            <small class="text-muted fw-bold">Colaborador (60%)</small>
+                            <h3 class="text-success mt-2">R$ <span id="totalColab">0.00</span></h3>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card p-3 text-center bg-dark border-secondary h-100">
+                            <small class="text-muted fw-bold">Casa (40%)</small>
+                            <h3 class="text-gold mt-2">R$ <span id="totalCasa">0.00</span></h3>
+                        </div>
                     </div>
                 </div>
-                <div class="col-6">
-                    <div class="card p-3 h-100 text-center border-0" style="background: linear-gradient(145deg, #1e1e1e, #252525);">
-                        <small class="text-muted text-uppercase fw-bold" style="font-size: 0.7rem;">Casa (40%)</small>
-                        <h3 class="text-gold mt-2 fw-bold">R$ <span id="totalCasa">0.00</span></h3>
+                
+                <div class="card p-3">
+                    <h6 class="text-white mb-3">Histórico do Dia</h6>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-striped table-sm align-middle mb-0">
+                            <thead>
+                                <tr class="text-muted">
+                                    <th>Cli.</th>
+                                    <th>Serv.</th>
+                                    <th>Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody id="listaHistorico">
+                                </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-            
-            <div class="card p-3">
-                <h6 class="mb-3 text-gold">Histórico Recente</h6>
-                <div class="table-responsive">
-                    <table class="table table-dark table-hover table-sm align-middle mb-0">
-                        <thead>
-                            <tr class="text-muted small">
-                                <th>Cli.</th>
-                                <th>Sv.</th>
-                                <th>Total</th>
-                                <th>Sua Parte</th>
-                            </tr>
-                        </thead>
-                        <tbody id="listaHistorico" class="small">
-                            </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
 
-        <div class="tab-pane fade" id="chatbot">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="mb-0 text-gold">Pedidos Online</h5>
-                <span class="badge bg-secondary">WhatsApp</span>
-            </div>
-            
-            <div id="chatbotList" class="list-group">
+            <div class="tab-pane fade" id="chatbot" role="tabpanel">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="text-white mb-0">Fila de Espera</h5>
+                    <span class="badge bg-success"><i class="bi bi-whatsapp"></i> Online</span>
                 </div>
-            <div class="text-center mt-3">
-                <small class="text-muted">Conectado ao Firebase.</small>
+                <div id="chatbotList" class="list-group">
+                    </div>
+                <p class="text-center text-muted mt-3 small">Aguardando novos pedidos...</p>
             </div>
-        </div>
 
-    </div>
-</div>
+        </div> </div> </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script type="module">
-    // Importando Firebase (Versão 10.8.0 Estável)
+    // Importações do Firebase
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, Timestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    // --- SUA CONFIGURAÇÃO DO FIREBASE (JÁ INSERIDA) ---
+    // --- CONFIGURAÇÃO (Já com suas chaves) ---
     const firebaseConfig = {
         apiKey: "AIzaSyDcIDq8AEmL48Z9IFy7-fzBTY6yiFTzTL4",
         authDomain: "appbarber-cf462.firebaseapp.com",
@@ -289,43 +265,61 @@
         measurementId: "G-8L2WJPVW6G"
     };
 
-    // Inicializa o Firebase
+    // Inicializa Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth(app);
     const colecaoVendas = collection(db, "lancamentos");
 
-    // --- UI e Navegação ---
-    let userType = localStorage.getItem('barberUser');
-    
-    if (userType) {
-        mostrarPainel();
-    }
-
-    // Tornar funções acessíveis globalmente
-    window.login = function() {
-        const type = document.getElementById('userSelect').value;
-        localStorage.setItem('barberUser', type);
-        userType = type;
-        mostrarPainel();
-    }
-
-    window.logout = function() {
-        localStorage.removeItem('barberUser');
-        location.reload();
-    }
-
-    function mostrarPainel() {
-        const loginScreen = document.getElementById('loginScreen');
-        loginScreen.style.opacity = '0';
-        setTimeout(() => {
-            loginScreen.classList.add('hidden');
+    // --- Monitorar Estado do Login (Entra sozinho se já logou antes) ---
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // Usuário está logado
+            console.log("Logado como:", user.email);
+            document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('mainPanel').classList.remove('hidden');
+            document.getElementById('btnSair').classList.remove('hidden');
             iniciarEscutaEmTempoReal();
             carregarChatbotMock();
-        }, 300);
+        } else {
+            // Usuário não está logado
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('mainPanel').classList.add('hidden');
+            document.getElementById('btnSair').classList.add('hidden');
+        }
+    });
+
+    // --- Função de Login (Conectada ao Form) ---
+    window.fazerLogin = function(e) {
+        e.preventDefault();
+        const email = document.getElementById('emailLogin').value;
+        const pass = document.getElementById('senhaLogin').value;
+        const errorMsg = document.getElementById('loginError');
+
+        errorMsg.classList.add('hidden');
+        
+        signInWithEmailAndPassword(auth, email, pass)
+            .then((userCredential) => {
+                // Sucesso! O onAuthStateChanged vai cuidar de mudar a tela
+            })
+            .catch((error) => {
+                console.error(error);
+                errorMsg.innerText = "Erro: Email ou senha incorretos.";
+                errorMsg.classList.remove('hidden');
+            });
     }
 
-    // --- Lógica: SALVAR NO FIREBASE ---
+    // --- Função de Logout ---
+    window.logout = function() {
+        signOut(auth).then(() => {
+            // O onAuthStateChanged vai jogar pra tela de login
+            location.reload(); 
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
+
+    // --- Salvar Venda no Banco ---
     window.salvarServico = async function(e) {
         e.preventDefault();
         
@@ -333,7 +327,7 @@
         const servico = document.getElementById('tipoServico').value;
         const valorTotal = parseFloat(document.getElementById('valorServico').value);
 
-        if(!cliente || !valorTotal) return alert("Preencha todos os campos!");
+        if(!cliente || !valorTotal) return;
 
         const parteColaborador = valorTotal * 0.60;
         const parteCasa = valorTotal * 0.40;
@@ -345,22 +339,22 @@
                 total: valorTotal,
                 colab: parteColaborador,
                 casa: parteCasa,
+                user_email: auth.currentUser.email, // Salva quem fez o corte
                 data: Timestamp.now()
             });
-
-            alert(`✅ Lançado! Colab: R$${parteColaborador.toFixed(2)} | Casa: R$${parteCasa.toFixed(2)}`);
-            
+            alert("✅ Lançado com sucesso!");
             document.getElementById('clienteNome').value = '';
             document.getElementById('valorServico').value = '';
+            
+            // Foca de novo no primeiro campo
             document.getElementById('clienteNome').focus();
 
         } catch (error) {
-            console.error("Erro:", error);
-            alert("Erro ao salvar. Verifique sua conexão.");
+            alert("Erro ao salvar: " + error.message);
         }
     }
 
-    // --- Lógica: LER EM TEMPO REAL ---
+    // --- Atualizar Relatório em Tempo Real ---
     function iniciarEscutaEmTempoReal() {
         const q = query(colecaoVendas, orderBy("data", "asc"));
 
@@ -375,18 +369,15 @@
                 vendas.push({ id: doc.id, ...doc.data() });
             });
 
-            // Mostra do mais novo pro mais antigo
+            // Mostra os mais recentes no topo
             vendas.reverse().forEach(item => {
                 totalC += item.colab;
                 totalH += item.casa;
 
-                let servicoCurto = item.servico.split(' ')[0] + '...';
-
                 let row = `<tr>
-                    <td class="fw-bold text-white">${item.cliente}</td>
-                    <td class="text-muted">${servicoCurto}</td>
-                    <td>R$${item.total.toFixed(0)}</td>
-                    <td class="text-success fw-bold">R$${item.colab.toFixed(2)}</td>
+                    <td class="text-white">${item.cliente}</td>
+                    <td class="text-muted small">${item.servico}</td>
+                    <td class="text-gold">R$${item.total.toFixed(0)}</td>
                 </tr>`;
                 tbody.innerHTML += row;
             });
@@ -396,38 +387,39 @@
         });
     }
 
-    // --- Mock Chatbot ---
+    // --- Mock Chatbot (Exemplo) ---
     window.carregarChatbotMock = function() {
-        const pedidosMock = [
+        const pedidos = [
             { cliente: "Carlos (Zap)", servico: "Barba + Corte", hora: "14:30" },
-            { cliente: "Ana (Zap)", servico: "Sobrancelha", hora: "15:00" }
+            { cliente: "Ana (Bot)", servico: "Sobrancelha", hora: "15:00" }
         ];
         const lista = document.getElementById('chatbotList');
         const badge = document.getElementById('chatBadge');
+        
         if(lista) {
             lista.innerHTML = '';
-            pedidosMock.forEach(p => {
+            pedidos.forEach(p => {
                 lista.innerHTML += `
                     <div class="list-group-item d-flex justify-content-between align-items-center p-3">
                         <div>
-                            <h6 class="mb-0 text-white">${p.cliente}</h6>
-                            <small class="text-muted"><i class="bi bi-clock"></i> ${p.hora} • ${p.servico}</small>
+                            <div class="fw-bold text-white">${p.cliente}</div>
+                            <div class="small text-muted">${p.servico} - ${p.hora}</div>
                         </div>
-                        <button class="btn btn-sm btn-outline-success rounded-pill px-3" onclick="importarPedido('${p.cliente}', '${p.servico}')">
+                        <button class="btn btn-sm btn-outline-success rounded-pill" onclick="importarPedido('${p.cliente}', '${p.servico}')">
                             Lançar
                         </button>
                     </div>`;
             });
-            badge.innerText = pedidosMock.length;
+            badge.innerText = pedidos.length;
         }
     }
 
     window.importarPedido = function(nome, servico) {
         document.getElementById('clienteNome').value = nome;
-        // Muda para a aba de lançar
-        const triggerEl = document.querySelector('#lancar-tab')
-        const tab = new bootstrap.Tab(triggerEl)
-        tab.show()
+        // Ativa a aba de lançar via JS do Bootstrap 5
+        const triggerEl = document.querySelector('#lancar-tab');
+        const tab = new bootstrap.Tab(triggerEl);
+        tab.show();
         document.getElementById('valorServico').focus();
     }
 </script>
